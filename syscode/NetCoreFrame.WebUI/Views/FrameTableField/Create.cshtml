@@ -1,0 +1,146 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.Frame_TableField
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            background-color: #e6e6e6;
+        }
+
+        .layui-inline {
+            margin-right:0px !important;
+            width:49%;
+        }
+        .layui-form-item {
+        margin-bottom:0px !important;
+        }
+    </style>
+}
+
+    <form asp-action="Create" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label   class="layui-form-label">表单名称</label>
+                <div class="layui-input-block">
+
+                    <input  type="text" name="TableName" value="@ViewBag.TableName" class="layui-input"  readonly="readonly"> 
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" asp-for="TableId"> </label>
+                <div class="layui-input-block">
+                    <input asp-for="TableId" type="text" name="TableId" autocomplete="off" class="layui-input" value="@ViewBag.TableId">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label asp-for="FieldDisplayName" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <input asp-for="FieldDisplayName" type="text" name="FieldDisplayName" required lay-verify="required"
+                           placeholder="请输入字段中文名" autocomplete="off" class="layui-input">
+
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label asp-for="FieldName" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <input asp-for="FieldName" type="text" name="FieldName" required lay-verify="required"
+                           placeholder="请输入名称" autocomplete="off" class="layui-input">
+                    <span asp-validation-for="FieldName" class="text-danger"></span>
+                    <input asp-for="TableId" name="TableId" hidden="hidden" value="@ViewBag.TableId" />
+
+                </div>
+            </div>
+          
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label asp-for="FieldType" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <SelectLists code-name="字段类型" name="FieldType"></SelectLists>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label asp-for="FieldLength" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <input asp-for="FieldLength" type="text" name="FieldLength" required lay-verify="required"
+                           placeholder="请输入字段长度" autocomplete="off" class="layui-input" value="50">
+                    <span asp-validation-for="FieldLength" class="text-danger"></span>
+                </div>
+            </div>
+           
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label asp-for="DecimalLength" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <input asp-for="DecimalLength" type="text" name="DecimalLength" required lay-verify="required"
+                           placeholder="请输入Decimal长度" autocomplete="off" class="layui-input" value="0">
+
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label asp-for="FieldDisplayType" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <SelectLists code-name="字段展现名称" name="FieldDisplayType"></SelectLists>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label asp-for="DataSource_CodeName" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <SelectLists items="@ViewBag.SourceList" name="DataSource_CodeName" first-name="无"></SelectLists> 
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label asp-for="IsShowInAdd" class="layui-form-label"></label>
+                <div class="layui-input-block"> 
+                    <SelectLists  code-name="是否" name="IsShowInAdd"></SelectLists> 
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label asp-for="IsMustFill" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <SelectLists code-name="是否" name="IsMustFill"></SelectLists>
+                  
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label asp-for="IsSearchCondition" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <SelectLists code-name="是否" name="IsSearchCondition"></SelectLists>
+                  
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align:center;margin-left:0px;">
+                <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+@section Scripts{
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+            var result = JSON.parse(data);
+            if (result.Code == 200) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        }
+
+    </script>
+
+}
+

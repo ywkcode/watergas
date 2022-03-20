@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+
+}
+<link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+<link href="~/lib/Spotlight/css/style.css" rel="stylesheet" />
+
+<style type="text/css">
+    .layui-btn {
+        width: 40% !important;
+    }
+</style>
+
+<div>
+    <div class="spotlight-group">
+        @foreach (var item in ViewBag.ImgList)
+        {
+            <div class="spotlight image" data-src=" @item.ToString() " style=" background-image: url(@item.ToString())"></div>
+        }
+    </div>
+    @*<div>
+        <button data-method="offset" data-type="auto" class="layui-btn layui-btn-normal">居中弹出</button>
+        <button data-method="notice" class="layui-btn">示范一个公告层</button>
+        <button onclick="Create()" class="layui-btn">AAAA</button>
+    </div>*@
+</div> 
+<script src="~/lib/Spotlight/js/spotlight.bundle.js"></script>
+<script type="text/javascript">
+
+</script>
+
+@section Scripts{
+    <script src="~/lib/SingnlR/signalr.js"></script>
+    <script src="~/lib/layui/layui.all.js"></script>
+    <script type="text/javascript">
+        var conn = null;
+        var id = "@ViewBag.ID";
+    setupConn = () => {
+        conn = new signalR.HubConnectionBuilder()
+            .withUrl("/hub")
+            .build();
+
+        conn.on("ReceiveImage", (obj) => {
+            if (id == obj)
+            {
+                window.location.href = window.location.href;
+            }
+        });
+        conn.on("ReceiveMessage", (content,titleStr) =>
+        {
+            var index = layer.open
+                ({
+                    type: 1
+                    , title: [titleStr] //不显示标题栏
+                    , closeBtn: false
+                    , area: '600px;'
+                    , shade: 0.8
+                    , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    , btn: ['关闭']
+                    , btnAlign: 'c'
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: '<div style="padding: 20px 10px 50px 10px;text-align: left;text-indent: 2em; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' + content+'</div>'
+                    
+                });
+        });
+        conn.start()
+            .catch(err => console.log(err));
+    }
+    setupConn();
+    </script>
+    <script>
+        layui.use(['layer'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+
+            var active = {
+                offset: function (othis) {
+                    var type = othis.data('type')
+                        , text = othis.text();
+
+                    layer.open({
+                        type: 1
+                        , offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        , id: 'layerDemo' + type //防止重复弹出
+                        , content: '<div style="padding: 20px 100px;">' + text + '</div>'
+                        , btn: '关闭全部'
+                        , btnAlign: 'c' //按钮居中
+                        , shade: 0 //不显示遮罩
+                        , yes: function () {
+                            layer.closeAll();
+                        }
+                    });
+                }
+                , notice: function () {
+                    //示范一个公告层
+                    layer.open({
+                        type: 1
+                        , title: false //不显示标题栏
+                        , closeBtn: false
+                        , area: '300px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        , btn: [ '关闭']
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br> layer 只是作为 layui 的一个弹层模块，由于其用户基数较大，所以常常会有人以为 layui 是 <del>layerui</del><br><br>layer 虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级 ^_^</div>'
+                        , success: function (layero) {
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.find('.layui-layer-btn0').attr({
+                                href: 'http://www.layui.com/'
+                                , target: '_blank'
+                            });
+                        }
+                    });
+                }
+            };
+
+                $(".layui-btn").on('click', function () {
+                    var othis = $(this), method = othis.data('method');
+                    active[method] ? active[method].call(this, othis) : '';
+                });
+        });
+        
+    </script>
+
+}
+

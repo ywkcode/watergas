@@ -1,0 +1,151 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.ProductionStation
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Create" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">唯一标识</label>
+        <div class="layui-input-block">
+            <input type="text" name="ID" required readonly="readonly"
+                   autocomplete="off" class="layui-input" value="@ViewBag.Guid">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="ProductionName" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="ProductionName" type="text" name="ProductionName" required lay-verify="required"
+                   placeholder="请输入产线名称" autocomplete="off" class="layui-input">
+            <span asp-validation-for="ProductionName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="StationName" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="StationName" type="text" name="StationName" required lay-verify="required"
+                   placeholder="请输入工位名称" autocomplete="off" class="layui-input">
+            <span asp-validation-for="StationName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="IPNum" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="IPNum" type="text" name="IPNum" required lay-verify="required"
+                   placeholder="请输入工位IP" autocomplete="off" class="layui-input">
+            <span asp-validation-for="IPNum" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-col-xs12">
+        <table id="childList" lay-filter="childList" class="layui-table"
+               lay-size="sm"></table>
+    </div>
+    <div class="layui-form-item ">
+        <div class="layui-input-block btnlist">
+            <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+            var result = JSON.parse(data);
+            if (result.Code == 200) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        }
+        //主列表加载，可反复调用进行刷新
+        var config = {};  //table的参数，如搜索key，点击tree的id
+        layui.use(['layer', 'table', "tree"], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+
+            var Layuitable = layui.table;
+
+
+            var columns2 = [
+                { checkbox: true, fixed: true },
+                { field: 'FileName', title: '文档名称' }
+            ];
+
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: '300',
+                elem: '#childList',
+                page: true,
+                url: '/FrameRelations/LoadFileByStationId',
+                cols: [columns2],
+                where: { page: 1, limit: 20, StationId: "", }
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true,
+                done: function (res, page, count) {
+
+                    for (var i = 0; i < count; i++) {
+                        if (res.data[i]["IsCheck"] == "1") {
+                            //实现选中效果
+                            res.data[i]["LAY_CHECKED"] = 'true'
+
+                            $("div[lay-id=childList]").find('tr[data-index=' + i + '] input[type="checkbox"]').prop('checked', true);
+                            $("div[lay-id=childList]").find('tr[data-index=' + i + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+
+                        }
+                    }
+
+                }
+
+            });
+
+            //监听复选框选中事件
+            Layuitable.on('checkbox(childList)', function (obj) {
+                //选择成功 增加记录
+                debugger;
+                //建立RoleUser关系
+                UpdateStation('@ViewBag.Guid', obj.data.ID, obj.checked);
+            })
+
+        });
+
+        function UpdateStation(roleid, userid, isAdd) {
+            var url = '/FrameRelations/AddRelations';
+            if (isAdd == false) {
+                var url = '/FrameRelations/DelRelations';
+            }
+            $.ajax({
+                url: url,
+                type: "POST",
+                traditional: true,//传数组一定要加的
+                data: { FirstId: roleid, SecondId: userid, RelationType: "Station" },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Code == 200) {
+                        layer.msg("操作成功");
+                    }
+                }
+            });
+        }
+    </script>
+
+}
+@section Styles
+{
+  <style type="text/css">
+      .btnlist {
+          float: right;
+          padding: 5px;
+      }
+  </style>
+}
+

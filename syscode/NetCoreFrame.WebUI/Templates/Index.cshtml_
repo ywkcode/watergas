@@ -1,0 +1,155 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="layui-collapse"> 
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">搜索条件</h2>
+            <div class="layui-colla-content layui-show">
+                 {SearchInfo} 
+            </div>
+        </div> 
+ </div>
+ 
+
+
+<form class="layui-form">
+    <div class="layui-row">
+	        <script type="text/html" id="toolbar">
+
+            <div class="layui-btn-group">
+              <button type="button" class="layui-btn-sm layui-btn-primary"  lay-event="btnSearch"> <i class="layui-icon">&#xe615;</i>查询</button>
+               <button type="button" class="layui-btn-sm layui-btn-primary"  lay-event="btnAdd"> <i class="layui-icon">&#xe654;</i>新建</button>
+               <button type="button" class="layui-btn-sm layui-btn-primary"  lay-event="btnEdit"> <i class="layui-icon">&#xe642;</i>编辑</button>
+               <button type="button" class="layui-btn-sm layui-btn-primary"  lay-event="btnDel"><i class="layui-icon">&#xe640;</i>删除</button>
+            </div> 
+            </script>
+        <table id="mainList" lay-filter="mainList" class="layui-table"  lay-size="sm"></table>
+    </div>
+
+</form>
+@section Scripts{
+
+    <script type="text/javascript">
+        var index; 
+        layui.use(['layer', 'table', "tree"], function ()
+        {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+            var  Layuitable = layui.table;
+			{SearchColumns}
+           
+            Layuitable.render({ 
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#mainList',
+                page: true,
+				toolbar: '#toolbar', //开启头部工具栏，并为其绑定左侧模板
+                url: '/{TableName}/All',
+			    limits: [15,20,25],
+                limit: 20 , //每页默认显示的数量
+                cols: [columns] ,
+                response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true
+            });
+			 //头工具栏事件
+              Layuitable.on('toolbar(mainList)', function(obj){
+                    var table = layui.table;
+                    var checkStatus = table.checkStatus('mainList');
+                    var datas = checkStatus.data;
+                    var id = new Array();//声明数组
+                    for (var i in datas) {
+                        id[i] = datas[i].ID;//得到复选框的值
+                    }
+                  switch(obj.event){
+                    case 'btnAdd':
+                        Create();
+                  break;
+                  case 'btnDel':
+                        Delete(id);
+                  break; 
+                     case 'btnEdit':
+                        Edit(datas[0]["ID"]);
+                  break; 
+                };
+              });
+            //主列表加载，可反复调用进行刷新
+            var config = {};  //table的参数，如搜索key，点击tree的id
+            var refreshList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                Layuitable.reload('mainList', {
+                    url: '/{TableName}/All',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            };
+           
+
+        });
+        function Create() {
+              index = layer.open
+                ({
+                    type: 2,
+                    title:'新建',
+                    content: '@Url.Action("{TableName}Create", "{TableName}")',
+                    area: ['400px', '300px'],
+                    btnAlign: 'c',
+                });
+        }
+       
+         function Delete(id) {
+               $.ajax({
+                        url: '/{TableName}/Delete',
+                        type: "POST",
+                        traditional: true,//传数组一定要加的
+                        data: { "ids": id},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.Code == 200) {
+                                ShowNotice();
+                            }
+                        }
+                    });
+        }
+        function Edit(id) {
+             index = layer.open
+                ({
+                    type: 2,
+                    title:'编辑',
+                    content: '/{TableName}/Edit?id=' + id,
+                         area: ['500px', '300px'],
+                    btnAlign: 'c',
+                    end: function () {
+                        ShowNotice();
+                    }
+                });
+        }
+         
+        function ShowNotice() {
+            var noticeIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            layer.msg("操作成功");
+            layer.close(noticeIndex);
+            location.reload();//弹出层结束后，刷新主页面
+        }
+
+        
+
+    </script>
+    <script type="text/html" id="Operate">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">设置</a>
+    </script>
+    <script type="text/html" id="Index">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+}
+
+

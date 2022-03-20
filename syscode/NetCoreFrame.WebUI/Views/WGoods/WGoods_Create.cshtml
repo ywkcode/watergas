@@ -1,0 +1,134 @@
+﻿@model NetCoreFrame.Entity.Wedrent.W_Goods
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Create" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">唯一标识</label>
+        <div class="layui-input-block">
+            <input type="text" name="ID" required readonly="readonly"
+                   autocomplete="off" class="layui-input" value="@ViewBag.Guid">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsName" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="GoodsName" type="text" name="GoodsName" required lay-verify="required"
+                   placeholder="商品名称" autocomplete="off" class="layui-input">
+            <span asp-validation-for="GoodsName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsNumber" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="GoodsNumber" type="text" name="GoodsNumber" required lay-verify="required"
+                   placeholder="商品编码" autocomplete="off" class="layui-input">
+            <span asp-validation-for="GoodsNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">图片</label>
+        <div class="layui-input-block">
+            <form:Upload name="ImgAttachID" is-upload-img="true"></form:Upload>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsType" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsType" type="text" name="GoodsType"
+                   placeholder="品类" autocomplete="off" class="layui-input">
+            <span asp-validation-for="GoodsType" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsSize" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsSize" type="text" name="GoodsSize"
+                   placeholder="尺码" autocomplete="off" class="layui-input">
+            <span asp-validation-for="GoodsSize" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsPrice" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsPrice" type="text" name="GoodsPrice"
+                   placeholder="价格" autocomplete="off" class="layui-input" value="0.00">
+            <span asp-validation-for="GoodsPrice" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Supplier" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="Supplier" type="text" name="Supplier" required lay-verify="required"
+                   placeholder="进货商" autocomplete="off" class="layui-input">
+            <span asp-validation-for="Supplier" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsCount" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsCount" type="text" name="GoodsCount" required lay-verify="required"
+                   placeholder="件数" autocomplete="off" class="layui-input" value="1">
+            <span asp-validation-for="GoodsCount" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="OrderTime" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <form:DateTime name="OrderTime" is-now="true"></form:DateTime>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label asp-for="GoodsDescription" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsDescription" type="text" name="GoodsDescription"
+                   placeholder="商品描述" autocomplete="off" class="layui-input">
+            <span asp-validation-for="GoodsDescription" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Remarks" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="Remarks" type="text" name="Remarks"
+                   placeholder="备注" autocomplete="off" class="layui-input">
+            <span asp-validation-for="Remarks" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="layui-form-item ">
+        <div class="layui-input-block btnlist">
+            <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+            var result = JSON.parse(data);
+            if (result.Code == 200) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        } 
+    </script>
+
+}
+@section Styles
+{
+  <style type="text/css">
+      .btnlist {
+          float: right;
+          padding: 5px;
+      }
+  </style>
+}
+

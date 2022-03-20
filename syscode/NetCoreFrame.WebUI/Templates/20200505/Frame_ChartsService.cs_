@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using NetCoreFrame.Core.Request;
+using NetCoreFrame.Core.Response;
+using NetCoreFrame.Entity;
+using NetCoreFrame.Entity.FrameEntity;
+using NetCoreFrame.Repository.Interface;
+using System.Linq.Expressions;
+using NetCoreFrame.Core.Utils;
+
+namespace NetCoreFrame.Service
+{
+    /// <summary>
+    /// Frame_Charts
+    /// </summary>
+    public class Frame_ChartsService : BaseService<Frame_Charts>
+    {
+      
+        private NetCoreFrameDBContext _dbContext;
+        public Frame_ChartsService(IRepository<Frame_Charts> repository 
+            , NetCoreFrameDBContext dBContext) : base(repository)
+        {
+           
+            _dbContext = dBContext;
+        }
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="role"></param>
+        public void Add(Frame_Charts model)
+        {
+            _repository.Add(model);
+        }
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public TableData Load(PageRequest request,Frame_Charts model)
+        {
+
+            Expression<Func<Frame_Charts, bool>> expression = t => true;  
+            if (!string.IsNullOrEmpty(model.ChartInfo))
+{
+ expression = expression.And(t => t.ChartInfo.Contains(model.ChartInfo));}
+if (!string.IsNullOrEmpty(model.DataBase))
+{
+ expression = expression.And(t => t.DataBase.Contains(model.DataBase));}
+if (!string.IsNullOrEmpty(model.ChartType))
+{
+ expression = expression.And(t => t.ChartType.Contains(model.ChartType));}
+if (!string.IsNullOrEmpty(model.DataSQL))
+{
+ expression = expression.And(t => t.DataSQL.Contains(model.DataSQL));}
+if (!string.IsNullOrEmpty(model.ChartTitle))
+{
+ expression = expression.And(t => t.ChartTitle.Contains(model.ChartTitle));}
+if (!string.IsNullOrEmpty(model.ChartStyle))
+{
+ expression = expression.And(t => t.ChartStyle.Contains(model.ChartStyle));}
+
+            var datalist = _repository.Find(request.page, request.limit, "CreateTime desc",expression);
+            return new TableData
+            {
+			    
+                count = datalist.Count(),
+                data = datalist
+            };
+            
+        }
+      
+
+    }
+}

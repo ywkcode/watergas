@@ -1,0 +1,60 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.Frame_Charts
+@{
+    ViewData["Title"] = "ChartsShow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div   style="margin:0 auto;margin:50px;letter-spacing:10px;text-align: center">@Model.ChartTitle</div>
+<table class="layui-table" lay-size="sm">
+    <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+    </colgroup>
+    <thead>
+        <tr>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            Initial();
+        });
+        function Initial() {
+              $.ajax({
+                url: '/FrameCharts/ToDataTable',
+                type: "POST",
+                traditional: true,//传数组一定要加的
+                data: { "chartid": '@ViewBag.chartid' },
+                dataType: "json",
+                  success: function (data) {
+
+                    if (data.code == 200) {
+                      
+                        var headlist = data.data.headlist;
+                        $.each(headlist, function (index, data) {
+                            $(".layui-table colgroup").append(" <col width='150'>");
+                            $(".layui-table thead tr").append("<td>"+data+"</td>");
+                        });
+
+                        var datalist = data.data.datalist;
+                        $.each(datalist, function (index, data) {
+                            var item = "<tr>";
+                            $.each(data, function (innerindex, innerdata) {
+                                item+="<td>"+innerdata+"</td>"
+                            });
+                             item+=  "</tr>";
+                           $(".layui-table tbody").append(item);
+                        });
+
+                    }
+                }
+            });
+
+        }
+    </script>
+}
+

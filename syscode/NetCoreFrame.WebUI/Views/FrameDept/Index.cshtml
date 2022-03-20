@@ -1,0 +1,293 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-form-item {
+            display: inline-block;
+            clear: none !important;
+            margin-bottom:0px !important;
+        }
+    </style>
+}
+<div style="padding:5px;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" lay-verify="required" placeholder="请输入部门名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="float:right;">
+        <button class="layui-btn layui-btn-sm" data-type="btnAdd">新建</button>
+        <button class="layui-btn layui-btn-sm" data-type="btnDel">删除</button>
+        <button class="layui-btn layui-btn-sm" data-type="btnEdit">修改</button>
+        <button class="layui-btn layui-btn-sm" data-type="btnToken">获取Token</button>
+    </div>
+</div>
+<form class="layui-form">
+    <div class="layui-row">
+        <div class="layui-col-xs2">
+            <div id="test1"></div>
+        </div>
+        <div class="layui-col-xs10">
+            <table id="mainList"
+                   lay-data="{height: 'full-80',cellMinWidth:80, page:true, id:'mainList'}"
+                   lay-filter="list" lay-size="sm"></table>
+        </div>
+    </div>
+</form>
+@section Scripts{
+
+    <script type="text/javascript">
+        var index;
+        var treeData = "";
+
+        function GetToken() {
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                url: '/FrameUser/GetToken?userid=1',
+                success: function (data) {
+                    debugger;
+                }
+            });
+        }
+
+        function InitailDept() {
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                url: '/FrameDept/LoadDeptTree',
+                success: function (data) {
+                    treeData = data.Message;
+                    InitailTree();
+                }
+            });
+        }
+
+        function InitailTree() {
+            layui.use(["tree"], function () {
+                var tree = layui.tree;
+                data = eval('(' + treeData + ')');
+
+                tree.render({
+                    elem: '#test1'
+                    , data: data
+                    , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+                    , click: function (obj) {
+                        mainList({
+                            DeptId: obj.data.id,
+                            page: 1, limit: 1
+                        });
+
+                    }
+                });
+            });
+        }
+        layui.use(['layer', 'table', "tree"], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+            var table = layui.table;
+            var tree = layui.tree;
+            var treeSelect = layui.treeSelect;
+
+            //加载表头
+            $.getJSON('/FrameDept/All',
+                { page: 1, limit: 1 },
+                function (data) {
+
+                    table.render({
+                        // skin: 'line', //行边框风格
+                        even: true,//开启隔行背景
+                        size: 'sm', //小尺寸的表格
+                        height: 'full-70',
+                        elem: '#mainList',
+                        page: true,
+                        url: '/FrameDept/All',
+                        cols: [[
+                            { checkbox: true, fixed: true },
+                            { field: 'Index', title: '序号', width: 60, templet: '#Index' },
+                            { field: 'DeptName', title: '部门名称' },
+                            { field: 'DeptCode', title: '部门编码' },
+                            { field: 'DeptID', title: '部门ID' },
+                            { field: 'CreateTime', title: '创建日期' }
+                        ]]
+                        , response: {
+                            statusCode: 200 //规定成功的状态码，默认：0
+                        }
+                    });
+                });
+
+            //主列表加载，可反复调用进行刷新
+            var config = {};  //table的参数，如搜索key，点击tree的id
+            var mainList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                table.reload('mainList', {
+                    url: '/FrameDept/All',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            };
+
+
+            //加载部门树
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                url: '/FrameDept/LoadDeptTree',
+                success: function (data) {
+                    treeData = data.Message;
+                    data = eval('(' + treeData + ')');
+                    debugger;
+                    tree.render({
+                        elem: '#test1'
+                        , data: data
+                        , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+                        , click: function (obj) {
+                            mainList({ DeptId: obj.data.id });
+
+                        }
+                    });
+                }
+            });
+        });
+
+        function Create() {
+              index = layer.open
+                ({
+                    type: 2, //iframe层
+                    title:'新建',
+                         content: '@Url.Action("Create", "FrameDept")',
+                         area: ['500px', '300px'],
+                    btnAlign: 'c',
+                    end: function () {
+                        ShowNotice();
+                    }
+                });
+        }
+        function Edit(id) {
+             index = layer.open
+                ({
+                    type: 2,
+                    title:'编辑',
+                    content: '/FrameDept/Edit?id=' + id,
+                         area: ['500px', '300px'],
+                    btnAlign: 'c',
+                    end: function () {
+                        ShowNotice();
+                    }
+                });
+
+        }
+
+        function ShowNotice() {
+            var noticeIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            layer.msg("操作成功");
+            layer.close(noticeIndex);
+            location.reload();//弹出层结束后，刷新主页面
+        }
+
+        $('.layui-btn').on('click', function () {
+            debugger;
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听页面主按钮操作
+        var active = {
+
+            btnDel: function ()
+            {      //批量删除
+                var table = layui.table;
+                var checkStatus = table.checkStatus('mainList');
+                var datas = checkStatus.data;
+                var id = new Array();//声明数组
+                for (var i in datas) {
+                    id[i] = datas[i].ID;//得到复选框的值
+                }
+                $.ajax({
+                    url: '/FrameDept/Delete',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "ids": id},
+                    dataType: "json",
+                    success: function (data) {
+
+                        if (data.Code == 200) {
+                            ShowNotice();
+                        }
+                    }
+                });
+             }
+            , btnAdd: function () {  //添加
+                //editDlg.add();
+                Create();
+            }
+            , btnToken: function () {
+                GetToken();
+            }
+            , btnEdit: function () {  //编辑
+                var checkStatus = layui.table.checkStatus('mainList')
+                    , data = checkStatus.data;
+                if (data.length != 1) {
+                    layer.msg("请选择编辑的行，且同时只能编辑一行");
+                    return;
+                }
+                //editDlg.update(data[0]);
+                Edit(data[0]["ID"]);
+            }
+            , search: function () {   //搜索
+                mainList({ key: $('#key').val() });
+            }
+            , btnRefresh: function () {
+                mainList();
+            }
+        };
+        var editDlg = function () {
+            var vm;
+            var update = false;  //是否为更新
+            var show = function (data) {
+                var title = update ? "编辑信息" : "添加";
+                 index = layer.open
+                ({
+                    type: 2,
+                    title: title,
+                    content: '@Url.Action("Create","FrameDept")',
+                    area: ['500px', '300px'],
+                    btnAlign: 'c',
+
+                });
+            }
+            return {
+                add: function () { //弹出添加
+                    update = false;
+                    show({
+                        Id: ''
+                    });
+                },
+                update: function (data) { //弹出编辑框
+                    update = true;
+                    show(data);
+                }
+            };
+        }();
+
+
+    </script>
+    <script type="text/html" id="Index">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+}
+
+

@@ -1,0 +1,275 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .layui-colla-title {
+        position: relative;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 15px 0 35px;
+        color: white;
+        background-color: #1AA094;
+        cursor: pointer;
+        font-size: 14px;
+        overflow: hidden;
+    }
+
+    .layui-colla-content {
+        border-color: #1AA094;
+        padding: 5px;
+    }
+
+    .layui-form-label {
+        padding: 8px 10px;
+        width: 60px;
+    }
+
+    .layui-input, .layui-select, .layui-textarea {
+        height: 30px;
+    }
+
+    .layui-collapse {
+        border-radius: 11px;
+        margin-bottom: 7px;
+    }
+</style>
+<form class="layui-form">
+    <div class="layui-row">
+        <script type="text/html" id="toolbar">
+            <div class="layui-btn-group">
+                <button type="button" class="layui-btn layui-btn-primary" lay-event="btnSearch"> <i class="layui-icon">&#xe615;</i>查询</button>
+                <button type="button" class="layui-btn layui-btn-primary" lay-event="btnAdd"> 新增</button>
+                @*  <button type="button" class="layui-btn layui-btn-primary" lay-event="btnEdit">编辑</button>
+                    <button type="button" class="layui-btn layui-btn-primary" lay-event="btnDetail">查看</button>
+                    <button type="button" class="layui-btn layui-btn-primary" lay-event="btnRentDetail">租赁明细</button>*@
+                <button type="button" class="layui-btn layui-btn-primary" lay-event="btnDel"><i class="layui-icon">&#xe640;</i>删除</button>
+            </div>
+        </script>
+        <table id="mainList" lay-filter="mainList" class="layui-table" lay-size="sm"></table>
+    </div>
+
+</form>
+@section Scripts{
+
+<script type="text/javascript">
+    var index;
+    layui.use(['layer', 'table', "tree"], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.jquery;
+        var Layuitable = layui.table;
+        var columns = [
+            { checkbox: true, fixed: true },
+            { field: 'Index', title: '序号', width: 60, templet: '#Index' },
+            { field: 'EquipId', title: '设备Id' },
+            { field: 'Name', title: '设备名称' },
+            { field: 'CreateTime', title: '创建日期', templet: "<div>{{layui.util.toDateString(d.OrderTime, 'yyyy-MM-dd HH:mm:ss')}}</div>" }
+        ];
+        Layuitable.render({
+            even: false,//开启隔行背景
+            size: 'sm', //小尺寸的表格
+            height: 'full-50',
+            elem: '#mainList',
+            page: true,
+            toolbar: '#toolbar', //开启头部工具栏，并为其绑定左侧模板
+            url: '/WaterEquipment/All',
+            limits: [15, 20, 25],
+            limit: 20, //每页默认显示的数量
+            cols: [columns],
+            response: {
+                statusCode: 200 //规定成功的状态码，默认：0
+            },
+            loading: true
+        });
+        //头工具栏事件
+        Layuitable.on('toolbar(mainList)', function (obj) {
+            var table = layui.table;
+            var checkStatus = table.checkStatus('mainList');
+            var datas = checkStatus.data;
+            var id = new Array();//声明数组
+            for (var i in datas) {
+                id[i] = datas[i].ID;//得到复选框的值
+            }
+            switch (obj.event) {
+
+                case 'btnDel':
+                    Delete(id);
+                    break;
+                case 'btnAdd':
+                    Create();
+                    break;
+                case 'btnSearch':
+                    Search();
+                    break;
+                case 'btnEdit':
+                    Edit(datas[0]["ID"]);
+                    break;
+                case 'btnDetail':
+                    Detail(datas[0]["ID"]);
+                    break;
+                case 'btnRentDetail':
+                    RentDetail(datas[0]["ID"]);
+                    break;
+                case 'btnSend':
+                    Send();
+                    break;
+            };
+            if (obj.event === 'detail')
+            {      //查看
+
+              index = layer.open
+            ({
+                type: 2,
+                title: '设置',
+                content: '@Url.Action("WGoods_Edit", "WGoods")?ID=' + data.ID,
+                area: ['650px', '500px'],
+                btnAlign: 'c',
+            });
+           }
+
+
+        });
+        //主列表加载，可反复调用进行刷新
+        var config = {};  //table的参数，如搜索key，点击tree的id
+        var refreshList = function (options) {
+            if (options != undefined) {
+                $.extend(config, options);
+            }
+            Layuitable.reload('mainList', {
+                url: '/WaterEquipment/All',
+                where: config
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                }
+            });
+        };
+
+
+
+    });
+
+
+
+    function Delete(id) {
+        $.ajax({
+            url: '/WaterEquipment/Delete',
+            type: "POST",
+            traditional: true,//传数组一定要加的
+            data: { "ids": id },
+            dataType: "json",
+            success: function (data) {
+                if (data.Code == 200) {
+                    ShowNotice();
+                }
+            }
+        });
+    }
+
+
+
+    function ShowNotice() {
+        var noticeIndex = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        layer.msg("操作成功");
+        layer.close(noticeIndex);
+        location.reload();//弹出层结束后，刷新主页面
+
+        //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        //parent.layer.close(index); //再执行关闭
+    }
+
+    function Search()
+    {
+
+        layui.table.reload('mainList', {
+            url: '/WGoods/All',
+            where: {
+                GoodsName: $('#GoodsName').val(),
+                GoodsNumber: $("#GoodsNumber").val()
+            }
+            , response: {
+                statusCode: 200 //规定成功的状态码，默认：0
+            }
+        });
+    }
+    function Create()
+    {
+          index = layer.open
+            ({
+                type: 2,
+                title:'新建',
+                content: '@Url.Action("WaterEquipment_Create", "WaterEquipment")',
+                area: ['800px', '600px'],
+                btnAlign: 'c',
+                //窗口关闭执行
+                end: function () {
+                    //回调业务
+                    debugger;
+                   location.reload();
+                }
+            });
+    }
+    function Edit(ID)
+    {
+          index = layer.open
+            ({
+                type: 2,
+                title:'编辑',
+                content: '@Url.Action("WGoods_Edit", "WGoods")?ID=' + ID,
+                area: ['1210px', '700px'],
+                btnAlign: 'c',
+                //窗口关闭执行
+                end: function () {
+
+                   location.reload();
+                }
+            });
+    }
+    function Detail(ID)
+    {
+          index = layer.open
+            ({
+                type: 2,
+                title:'详情',
+                content: '@Url.Action("WGoods_Detail", "WGoods")?ID=' + ID,
+                area: ['1210px', '700px'],
+                btnAlign: 'c',
+                //窗口关闭执行
+                end: function () {
+
+                   //location.reload();
+                }
+            });
+    }
+    function RentDetail(ID)
+    {
+          index = layer.open
+            ({
+                type: 2,
+                title:'租赁详情',
+                content: '@Url.Action("WRent_DetailIndex", "WRent")?ID=' + ID,
+                area: ['1210px', '700px'],
+                btnAlign: 'c',
+                //窗口关闭执行
+                end: function () {
+
+                   //location.reload();
+                }
+            });
+    }
+
+</script>
+
+<script type="text/html" id="Index">
+    {{d.LAY_TABLE_INDEX+1}}
+</script>
+
+
+}
+
+
+
+

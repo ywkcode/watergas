@@ -1,0 +1,56 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.Frame_Dept
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Update" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="layui-form-item">
+        <label asp-for="DeptName" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="DeptName" type="text" name="DeptName" required lay-verify="required"
+                   placeholder="部门名称" autocomplete="off" class="layui-input">
+            <span asp-validation-for="DeptName" class="text-danger"></span>
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="PDeptID" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="PDeptID" type="text" name="PDeptID" required lay-verify="required"
+                   placeholder="父节点" autocomplete="off" class="layui-input">
+            <span asp-validation-for="PDeptID" class="text-danger"></span>
+
+            <input asp-for="ID" name="ID" hidden="hidden" />
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+        function afterSuccess(data) {
+
+            //var index = layer.load(1, {
+            //    shade: [0.1, '#fff'] //0.1透明度的白色背景
+            //});
+
+            var result = JSON.parse(data);
+            if (result.Code == 200) {
+                layer.closeAll();
+            }
+
+        }
+
+    </script>
+
+}
+

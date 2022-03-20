@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name=”renderer” content=”webkit|ie-comp|ie-stand” />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <link rel="icon" href="~/favicon.ico">
+
+    <title>WorkFlow</title>
+    <environment include="Development">
+        <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+     
+        <link href="~/LR_Content/style/lr-common.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/scroll/scroll.css" rel="stylesheet" />
+        <link href="~/LR_Content/style/lr-iframe-form.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/wizard/wizard.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/tree/lr-tree.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/select/lr-select.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/timeline/lr-timeline.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/formselect/lr-formselect.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/inputsearch/lr-isearch.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/grid/jfgrid.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/workflow/lr-workflow-ui.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/lib/layui/css/layui.css" rel="stylesheet" /> 
+        <link href="~/LR_Content/style/lr-common.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/scroll/scroll.css" rel="stylesheet" />
+        <link href="~/LR_Content/style/lr-iframe-form.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/wizard/wizard.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/tree/lr-tree.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/select/lr-select.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/timeline/lr-timeline.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/formselect/lr-formselect.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/inputsearch/lr-isearch.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/grid/jfgrid.css" rel="stylesheet" />
+        <link href="~/LR_Content/plugin/workflow/lr-workflow-ui.css" rel="stylesheet" />
+    </environment>
+    <style type="text/css">
+        .ywk-form-footer {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background-color: #eee;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .ywk-form-footer-inner {
+            float: right;
+            padding-right: 5px;
+        }
+
+        .layui-tab-content {
+            padding: 0px;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+
+    <!--[if lt IE 9]>
+      <script src="~/Content/bootstrap/html5shiv.min.js"></script>
+      <script src="~/Content/bootstrap/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        function request(d) { for (var c = location.search.slice(1).split("&"), a = 0; a < c.length; a++) { var b = c[a].split("="); if (b[0] == d) if ("undefined" == unescape(b[1])) break; else return unescape(b[1]) } return "" };
+    </script>
+
+</head>
+<body>
+    <div id="lr_form_bg" class="lr-form-bg">
+    </div>
+
+    @RenderBody()
+
+    <environment include="Development">
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/layui/layui.all.js"></script>
+        <script src="~/lib/layui/lay/common.js"></script>
+        <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/LR_Content/script/lr-base.js"></script>
+        <script src="~/LR_Content/script/lr-layer.js"></script>
+        <script src="~/LR_Content/script/lr-ajax.js"></script>
+        <script src="~/LR_Content/plugin/resize/resize.js"></script>
+        <script src="~/LR_Content/plugin/mousewheel/mousewheel.js"></script>
+        <script src="~/LR_Content/plugin/scroll/scroll.js"></script>
+        <script src="~/LR_Content/script/lr-validator.js"></script>
+        <script src="~/LR_Content/script/lr-form.js"></script>
+        <script src="~/LR_Content/plugin/wizard/wizard.js"></script>
+        <script src="~/LR_Content/plugin/tree/lr-tree.js"></script>
+        <script src="~/LR_Content/plugin/select/lr-select.js"></script>
+        <script src="~/LR_Content/plugin/timeline/lr-timeline.js"></script>
+        <script src="~/LR_Content/plugin/formselect/lr-formselect.js"></script>
+        <script src="~/LR_Content/plugin/inputsearch/lr-isearch.js"></script>
+        <script src="~/LR_Content/plugin/workflow/lr-workflow-ui.js"></script>
+        <script src="~/LR_Content/plugin/grid/jfgrid.js"></script>
+
+
+    </environment>
+    <environment exclude="Development">
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/layui/layui.all.js"></script>
+        <script src="~/lib/layui/lay/common.js"></script>
+        <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/LR_Content/script/lr-base.js"></script>
+        <script src="~/LR_Content/script/lr-layer.js"></script>
+        <script src="~/LR_Content/script/lr-ajax.js"></script>
+        <script src="~/LR_Content/plugin/resize/resize.js"></script>
+        <script src="~/LR_Content/plugin/mousewheel/mousewheel.js"></script>
+        <script src="~/LR_Content/plugin/scroll/scroll.js"></script>
+        <script src="~/LR_Content/script/lr-validator.js"></script>
+        <script src="~/LR_Content/script/lr-form.js"></script>
+        <script src="~/LR_Content/plugin/wizard/wizard.js"></script>
+        <script src="~/LR_Content/plugin/tree/lr-tree.js"></script>
+        <script src="~/LR_Content/plugin/select/lr-select.js"></script>
+        <script src="~/LR_Content/plugin/timeline/lr-timeline.js"></script>
+        <script src="~/LR_Content/plugin/formselect/lr-formselect.js"></script>
+        <script src="~/LR_Content/plugin/inputsearch/lr-isearch.js"></script>
+        <script src="~/LR_Content/plugin/workflow/lr-workflow-ui.js"></script>
+        <script src="~/LR_Content/plugin/grid/jfgrid.js"></script>
+
+    </environment>
+    @RenderSection("Scripts", required: false)
+    <script>
+        function request(d) { for (var c = location.search.slice(1).split("&"), a = 0; a < c.length; a++) { var b = c[a].split("="); if (b[0] == d) if ("undefined" == unescape(b[1])) break; else return unescape(b[1]) } return "" };
+    </script>
+    <script>
+        $.lrToken = $('@Html.AntiForgeryToken()').val();
+        $(function () {
+            $('#lr_form_bg').fadeOut();
+            $('#form').lrscroll();
+            // 翻译指定标签
+            $('.lrlg').each(function () {
+                var $this = $(this);
+
+            });
+            // 翻译表单标题
+            $('.lr-form-item-title').each(function () {
+                var $this = $(this);
+                var $font = $this.find('font');
+                $font.remove();
+
+            });
+            // input placeholder 翻译
+            $('input[placeholder]').each(function () {
+                var $this = $(this);
+                var _text = $this.attr('placeholder');
+
+            });
+
+
+            if (!!window.bootstrap) {
+                bootstrap(jQuery, top.learun);
+            }
+        });
+    </script>
+</body>
+</html>

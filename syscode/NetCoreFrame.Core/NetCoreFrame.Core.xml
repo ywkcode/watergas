@@ -1,0 +1,423 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NetCoreFrame.Core</name>
+    </assembly>
+    <members>
+        <member name="T:NetCoreFrame.Core.ApiDto.BaseDto">
+            <summary>
+            BaseDto
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.BaseDto.PageIndex">
+            <summary>
+            当前页 默认1
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.BaseDto.PageSize">
+            <summary>
+            每页个数 默认4
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Core.ApiDto.EnumStatus">
+            <summary>
+            枚举类
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Core.ApiDto.EnumStatus.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Core.ApiDto.EnumStatus.InfoType">
+            <summary>
+            信息类型
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.ApiDto.EnumStatus.InfoType.Empty">
+            <summary>
+            无
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.ApiDto.EnumStatus.InfoType.Video">
+            <summary>
+            视频
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.ApiDto.EnumStatus.InfoType.Audio">
+            <summary>
+            语音
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.ApiDto.EnumStatus.InfoType.File">
+            <summary>
+            文件
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Core.ApiDto.InfoListDto">
+            <summary>
+            信息显示
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.FileID">
+            <summary>
+            文件ID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.FileType">
+            <summary>
+            文件类型
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.DownloadCount">
+            <summary>
+            下载量
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.BoardCount">
+            <summary>
+            播放次数
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.FileContent">
+            <summary>
+            文件内容
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.FileTitle">
+            <summary>
+            文件标题
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.VideoMinLength">
+            <summary>
+            视频时长 
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.DownloadUrl">
+            <summary>
+            下载链接
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.CoverImgUrl">
+            <summary>
+            封面图片链接
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.CreateTime">
+            <summary>
+            创建日期
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.IconUrl">
+            <summary>
+            图标地址
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.BgUrl">
+            <summary>
+            背景图片
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListDto.DLIconUrl">
+            <summary>
+            下载图标Logo
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Core.ApiDto.InfoListSearchDto">
+            <summary>
+            查询
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListSearchDto.InfoType">
+            <summary>
+            文件类型
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.ApiDto.InfoListSearchDto.KeyWord">
+            <summary>
+            关键词
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.FileHelper.FileCoppy(System.String,System.String)">
+            <summary>
+            拷贝文件
+            </summary>
+            <param name="orignFile">原始文件</param>
+            <param name="newFile">新文件路径</param>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.FileHelper.FileDel(System.String)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="path">路径</param>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.FileHelper.FileMove(System.String,System.String)">
+            <summary>
+            移动文件
+            </summary>
+            <param name="orignFile">原始路径</param>
+            <param name="newFile">新路径</param>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.FileHelper.GetPrePath(System.String,System.Int32)">
+            <summary>
+            获取路径上一级
+            </summary>
+            <param name="Path"></param>
+            <param name="PrePage"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreFrame.Core.CommonHelper.LogHelper">
+            <summary>
+            自定义日志
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.LogHelper.WriteLogs(System.String)">
+            <summary>
+            写日志  await Task.Run(()=>WriteLogs("内容"))
+            </summary>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreFrame.Core.CommonHelper.MD5Helper">
+            <summary>
+            MD5Helper
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MD5Helper.Get32MD5(System.String)">
+             <summary>
+            获取32位md5加密
+             </summary>
+             <param name="source">待解密的字符串</param>
+             <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MD5Helper.Get16MD5(System.String)">
+            <summary>
+            获取16位md5加密
+            </summary>
+            <param name="source">待解密的字符串</param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreFrame.Core.CommonHelper.MyDateHelper">
+            <summary>
+            日期处理
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.CommonHelper.MyDateHelper.ChineseDayName">
+            <summary>
+            农历日期
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.CommonHelper.MyDateHelper.MonthEnName">
+            <summary>
+            月份英文名
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.CommonHelper.MyDateHelper.MonthChName">
+            <summary>
+            月份中文名
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MyDateHelper.GetNongLiDay(System.DateTime)">
+            <summary>
+            获取农历日期
+            </summary>
+            <param name="time"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MyDateHelper.GetCurrentMonthDays">
+            <summary>
+            获取当月天数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MyDateHelper.GetCurrentMonthEn">
+            <summary>
+            获取当月的月份和英文
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MyDateHelper.GetWeekOf(System.DateTime)">
+            <summary>
+            获得日期的星期几
+            </summary>
+            <param name="CurrentDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MyDateHelper.GetStampDateTime(System.Int64)">
+            <summary>
+            将c# DateTime时间格式转换为Unix时间戳格式 
+            </summary>
+            <param name="time"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.CommonHelper.MyDateHelper.Timestamp">
+            <summary>
+            获取时间戳
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreFrame.Core.Response.ApiReturnValue">
+            <summary>
+            WebApi返回数据格式
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.ApiReturnValue.Success">
+            <summary>
+            请求是否成功
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.ApiReturnValue.Msg">
+            <summary>
+            消息
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.ApiReturnValue.Result">
+            <summary>
+            返回参数
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Core.Response.KeyDescription">
+            <summary>
+            键值描述
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.KeyDescription.Key">
+            <summary>
+            键值
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.KeyDescription.Description">
+            <summary>
+            键的描述
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.PageResponse.Message">
+            <summary>
+            返回消息 成功或者错误的信息
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.PageResponse.Code">
+            <summary>
+            HTTP状态码
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Core.Response.PageResponse.Status">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Core.Response.TableData">
+            <summary>
+            Table 的返回数据 
+            用于Layui的列表加载
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.Response.TableData.code">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.Response.TableData.status">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.Response.TableData.msg">
+            <summary>
+            操作消息
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.Response.TableData.count">
+            <summary>
+            总记录条数
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.Response.TableData.columnHeaders">
+            <summary>
+             返回的列表头信息
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Core.Response.TableData.data">
+            <summary>
+            数据内容
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Core.Utils.HttpUtils">
+            <summary>
+            模拟请求
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Core.Utils.HttpUtils.HttpPost(System.String,System.String,System.String)">
+            <summary>
+            POST请求
+            </summary>
+            <param name="Url">请求地址</param>
+            <param name="postDataStr">请求数据</param>
+            <param name="contentType">数据类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.Utils.HttpUtils.HttpGet(System.String,System.String)">
+            <summary>
+            Get请求
+            </summary>
+            <param name="Url">请求地址</param>
+            <param name="postDataStr">请求数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.Utils.HttpUtils.PostResponse``1(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"></param>
+            <param name="postData"></param>
+            <param name="contentType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreFrame.Core.Utils.HttpWebResponseUtility.CreateGetHttpResponse(System.String,System.Nullable{System.Int32},System.String,System.Net.CookieCollection)">
+            <summary>  
+            创建GET方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:NetCoreFrame.Core.Utils.HttpWebResponseUtility.CreatePostHttpResponse(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Nullable{System.Int32},System.String,System.Text.Encoding,System.Net.CookieCollection)">
+            <summary>  
+            创建POST方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:NetCoreFrame.Core.Utils.HttpWebResponseUtility.CreatePostHttpResponse(System.String,System.String,System.Nullable{System.Int32},System.String,System.Text.Encoding,System.Net.CookieCollection)">
+            <summary>  
+            创建POST方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="T:NetCoreFrame.Core.Utils.ParameterRebinder">
+            <summary>
+            表达式目录树
+            </summary>
+        </member>
+    </members>
+</doc>

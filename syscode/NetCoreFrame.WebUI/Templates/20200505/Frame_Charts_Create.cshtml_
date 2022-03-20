@@ -1,0 +1,88 @@
+@model NetCoreFrame.Entity.FrameEntity.Frame_Charts
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            background-color: #e6e6e6;
+        }
+
+        .layui-inline {
+            margin-right: 0px !important;
+            width: 49%;
+        }
+
+        .layui-form-item {
+            margin-bottom: 0px !important;
+        }
+    </style>
+}
+<form asp-action="Create" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST"  >
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+     <div class="layui-form-item"> 
+<div class="layui-inline">
+<label asp-for="ChartInfo" class="layui-form-label"></label>
+<div class="layui-input-block">
+<input asp-for="ChartInfo" type="text" name="ChartInfo"   placeholder= "请输入报表简介"    class="layui-input">
+<span asp-validation-for="ChartInfo" class="text-danger"></span>
+</div>
+</div>
+<div class="layui-inline">
+<label asp-for="DataBase" class="layui-form-label"></label>
+<div class="layui-input-block">
+<input asp-for="DataBase" type="text" name="DataBase"   placeholder= "请输入连接字符串"    class="layui-input">
+<span asp-validation-for="DataBase" class="text-danger"></span>
+</div>
+</div>
+ <div class="layui-form-item"> 
+</div>
+<div class="layui-inline">
+<label asp-for="DataSQL" class="layui-form-label"></label>
+<div class="layui-input-block">
+<input asp-for="DataSQL" type="text" name="DataSQL"   placeholder= "请输入图标SQL"    class="layui-input">
+<span asp-validation-for="DataSQL" class="text-danger"></span>
+</div>
+</div>
+ <div class="layui-form-item"> 
+<div class="layui-inline">
+<label asp-for="ChartTitle" class="layui-form-label"></label>
+<div class="layui-input-block">
+<input asp-for="ChartTitle" type="text" name="ChartTitle"   placeholder= "请输入报表标题"    class="layui-input">
+<span asp-validation-for="ChartTitle" class="text-danger"></span>
+</div>
+</div>
+</div>
+<div class="layui-inline">
+<label asp-for="ChartStyle" class="layui-form-label"></label>
+<div class="layui-input-block">
+<input asp-for="ChartStyle" type="text" name="ChartStyle"   placeholder= "请输入报表风格"    class="layui-input">
+<span asp-validation-for="ChartStyle" class="text-danger"></span>
+</div>
+</div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block" style='text-align:center;margin:0 auto;'>
+            <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+	 
+        function afterSuccess(data) {
+            var result = JSON.parse(data);
+            if (result.Status == true) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        }
+
+
+    </script>
+
+}
+

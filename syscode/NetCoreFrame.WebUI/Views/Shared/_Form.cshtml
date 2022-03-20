@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>表单模板页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
+    <script src="~/lib/layui/layui.all.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js" charset="utf-8"></script>
+    <environment include="Development">
+        <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+    </environment>
+    <style type="text/css">
+        .ywk-form-footer {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background-color: #eee;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .ywk-form-footer-inner {
+            float: right;
+            padding-right: 5px;
+        }
+
+        .layui-tab-content {
+            padding: 0px;
+        }
+
+        .layui-colla-content {
+            padding: 0px;
+        }
+
+        .layui-table td, .layui-table th {
+            position: relative;
+            padding: 7px 4px;
+            min-height: 15px;
+            line-height: 15px;
+            font-size: 12px;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    @RenderBody()
+    <div class="ywk-form-footer">
+        <div class="ywk-form-footer-inner">
+            <button class="layui-btn-sm layui-btn-primary" id="btn_finish">确认</button>
+            <button type="button" class="layui-btn-sm layui-btn-primary" id="btn_cloas">关闭</button>
+        </div>
+    </div>
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js" charset="utf-8"></script>
+        <script src="~/lib/layui/layui.all.js"></script>
+        <script src="~/lib/layui/lay/common.js"></script>
+        <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/js/index.js"></script>
+        <script src="~/js/bodyTab.js"></script>
+        <script src="~/js/cache.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/jquery/dist/jquery.js" charset="utf-8"></script>
+        <script src="~/lib/layui/layui.all.js"></script>
+        <script src="~/lib/layui/lay/common.js"></script>
+        <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/js/index.js"></script>
+        <script src="~/js/bodyTab.js"></script>
+        <script src="~/js/cache.js"></script>
+
+    </environment>
+
+
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript">
+
+        (function ($) {
+            $.myPlugin = {
+                //初始化
+                init: function () {
+                    $('body').on('click', '#btn_cloas', function () {
+                        $.myPlugin.closeWin();
+                    });
+                },
+                //关闭当前窗口
+                closeWin: function () {
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                },
+                getFormData: function () {
+             
+                    var resdata = {};
+                    $('.layui-form').find('input,select,textarea,.lr-select,.lr-formselect,.lrUploader-wrap,.wm-radio,.lr-checkbox,.edui-default').each(function (r) {
+                       
+                        var id = $(this).attr('id');
+                        var name = $(this).attr('name');
+                        if (!!id || !!name) {
+                            var type = $(this).attr('type');
+                            switch (type) {
+                                case "radio":
+
+                                    var value = $(this).attr('value');
+                                    if ($("input[name='" + name + "'][value='" + value + "']").is(":checked")) {
+                                        //resdata[name] = value;
+                                        eval("resdata." + name + "='" + value + "'")
+                                    }
+                                    break;
+                                case "checkbox":
+                                    if ($("#" + id).is(":checked")) {
+                                        resdata[id] = 1;
+                                    } else {
+                                        resdata[id] = 0;
+                                    }
+                                    break;
+                                case "lrselect":
+                                    resdata[id] = $(this).lrselectGet();
+                                    break;
+                                case "formselect":
+                                    resdata[id] = $(this).lrformselectGet();
+                                    break;
+                                case "lrGirdSelect":
+                                    resdata[id] = $(this).lrGirdSelectGet();
+                                    break;
+                                case "lr-Uploader":
+                                    resdata[id] = $(this).lrUploaderGet();
+                                    break;
+                                case "lr-radio":
+                                    resdata[id] = $(this).find('input:checked').val();
+                                    break;
+                                case "lr-checkbox":
+                                    var _idlist = [];
+                                    $(this).find('input:checked').each(function () {
+                                        _idlist.push($(this).val());
+                                    });
+                                    resdata[id] = String(_idlist);
+                                    break;
+                                default:
+                                    if ($("#" + id).hasClass('currentInfo')) {
+                                        var value = $("#" + id)[0].lrvalue;
+                                        resdata[id] = $.trim(value);
+                                    }
+                                    else if ($(this).hasClass('edui-default')) {
+                                        if ($(this)[0].ue) {
+                                            resdata[id] = $(this)[0].ue.getContent(null, null, true);
+                                        }
+                                    }
+                                    else {
+                                        //text
+                                        var value = $("#" + id).val();
+                                        if (id != undefined) {
+                                            resdata[id] = $.trim(value);
+                                            // eval("resdata."+id+"='"+ $.trim(value)+"'")
+                                        }
+
+                                    }
+
+                                    break;
+                            }
+
+
+                        }
+                    });
+                    
+                    return resdata;
+                }
+            }
+        }(jQuery));
+        $(function () {
+            $.myPlugin.init();
+        })
+    </script>
+
+</body>
+</html>

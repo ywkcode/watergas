@@ -1,0 +1,66 @@
+﻿@model NetCoreFrame.Entity.Water.Water_Equipment
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Create" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">唯一标识</label>
+        <div class="layui-input-block">
+            <input type="text" name="ID" required readonly="readonly"
+                   autocomplete="off" class="layui-input" value="@ViewBag.Guid">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="EquipId" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="EquipId" type="text" name="EquipId" required lay-verify="required"
+                   placeholder="设备Id" autocomplete="off" class="layui-input">
+            <span asp-validation-for="EquipId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Name" class="layui-form-label"></label>
+
+        <div class="layui-input-block">
+            <input asp-for="Name" type="text" name="Name" required lay-verify="required"
+                   placeholder="设备名称" autocomplete="off" class="layui-input">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+   
+
+    <div class="layui-form-item ">
+        <div class="layui-input-block btnlist">
+            <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+            var result = JSON.parse(data);
+            if (result.Code == 200) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        } 
+    </script>
+
+}
+@section Styles
+{
+  <style type="text/css">
+      .btnlist {
+          float: right;
+          padding: 5px;
+      }
+  </style>
+}
+

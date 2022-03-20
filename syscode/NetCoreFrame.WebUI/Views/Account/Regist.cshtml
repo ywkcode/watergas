@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/css/login.css" rel="stylesheet" />
+    <style type="text/css">
+        .layui-btn {
+            width: 40% !important;
+        }
+    </style>
+}
+<div class="login">
+    <form asp-controller="Account" asp-action="Regist" method="post" data-ajax-success="afterSuccess">
+        <h1>系统注册</h1>
+        <div class="layui-form-item">
+            <input type="text" name="username" class="layui-input" placeholder="用户名" />
+        </div>
+        <div class="layui-form-item">
+            <input type="password" name="Password" class="layui-input" placeholder="密码" />
+        </div>
+        <div class="layui-row">
+            <button type="submit" class="layui-btn login_btn" Tex="登陆">确认</button>
+            <button class="layui-btn login_btn layui-bg-orange" Tex="返回登陆" onclick='@Url.Action("Login","Account")' style="float:right">注册</button>
+        </div>
+
+    </form>
+
+
+
+    <input id="btnAjax" type="submit" value="登陆" class="layui-btn login_btn" style="display:none" />
+    @section Scripts{
+        <script type="text/javascript"> 
+            function afterSuccess(data) {
+                if (data.status == true) {
+                    window.Location.href = '@Url.Action("Index","Home")';
+                }
+            } 
+        </script>
+
+    }
+
+</div>

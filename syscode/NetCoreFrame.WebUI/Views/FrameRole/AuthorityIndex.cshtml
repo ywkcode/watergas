@@ -1,0 +1,268 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            /*background-color: #e6e6e6;*/
+            background-color: gray;
+            color: white;
+        }
+    </style>
+}
+<button type="button" class="layui-btn layui-btn-sm" lay-demo="setChecked" id="treecheck" style="display:none">勾选指定节点</button>
+<form class="layui-form">
+    <div class="layui-row">
+        <!--角色名称 -->
+        <div class="layui-col-xs3">
+            <table id="mainList" lay-filter="mainList" class="layui-table"
+                   lay-size="sm"></table>
+        </div>
+        <div class="layui-col-xs3">
+            <blockquote class="layui-elem-quote title" style="padding:5px 15px;">
+                模块权限
+            </blockquote>
+            <div id="tree"></div>
+        </div>
+        <div class="layui-col-xs3">
+            <blockquote class="layui-elem-quote title" style="padding:5px 15px;margin-bottom:0px;">
+                按钮权限
+            </blockquote>
+            <table id="btnList" lay-filter="btnList" class="layui-table"
+                   lay-size="sm"></table>
+        </div>
+        <div class="layui-col-xs3">
+            <blockquote class="layui-elem-quote title" style="padding:5px 15px;">
+                字段权限
+            </blockquote>
+            <table id="TabList" lay-filter="TabList" class="layui-table"
+                   lay-size="sm"></table>
+        </div>
+    </div>
+</form>
+@section Scripts{
+
+    <script type="text/javascript">
+        var index;
+        //角色id
+        var roleid = "";
+        var treeData = "";
+        var setedModule = "";
+        var modeleval = "";
+        var modeleId = 0;
+        var isLeftClick = false;
+        layui.use(['layer', 'table', "tree", "util"], function () {
+            var form = layui.form,
+                layer = layui.layer,
+               util = layui.util
+                $ = layui.jquery;
+
+            var Layuitable = layui.table;
+            var tree = layui.tree;
+            var treeSelect = layui.treeSelect;
+
+
+
+
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#mainList',
+                url: '/FrameRole/All',
+                cols: [[
+                    { field: 'Index', title: '序号', width: 60, templet: '#Index' },
+                    { field: 'RoleName', title: '角色名称' }
+                ]]
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true
+            });
+            //监听行单击事件（单击事件为：rowDouble）
+            Layuitable.on('row(mainList)', function (obj) {
+                 
+                modeleval = "";
+                roleid = obj.data.ID;
+                Updatemodeleval(roleid);
+               // menuList({ ModuleId: obj.data.ModuleId });
+                //$("#treecheck").click();
+            });
+
+
+            var columns_btn = [
+                { checkbox: true, fixed: true },
+                { field: 'Index', title: '序号', width: 60, templet: '#Index' },
+                { field: 'Name', title: '已有菜单' }
+            ];
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-70',
+                elem: '#btnList',
+                where: { ModuleId:0},
+                url: '/FrameModuleElement/LoadMenus',
+                cols: [columns_btn]
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true,
+                text: {
+                    none: '单击模块列表数据行查看菜单'
+                }
+            });
+            //主列表加载，可反复调用进行刷新
+            var config = {};  //table的参数，如搜索key，点击tree的id
+            var mainList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                Layuitable.reload('mainList', {
+                    url: '/FrameModule/All',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            };
+             //加载模块树
+            var InitialModuleTree = function () {
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    dataType: 'json',
+                    url: '/FrameModule/LoadDeptTree',
+                    data: { },
+                    success: function (data) {
+                        treeData = data.Message;
+                        data = eval('(' + treeData + ')');
+                        tree.render({
+                            elem: '#tree'
+                            , data: data
+                            , id: 'treedemo'
+                            , isJump: true //是否允许点击节点时弹出新窗口跳转
+                            , showCheckbox: true
+                            , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+                            , oncheck: function (obj) {
+                                if (roleid == "") {
+                                    layer.msg("请选择角色！");
+                                    return;
+                                }
+                                //console.log(obj.data); //得到当前点击的节点数据
+                                //console.log(obj.checked); //得到当前节点的展开状态：open、close、normal
+                                //console.log(obj.elem); //得到当前节点元素
+                                 
+                                //新增或更新角色模块关系
+                                if (modeleval=="") {
+                                    UpdateRoleModule(roleid, obj.data.treeid, obj.checked);
+
+                                }
+
+                            }
+                            , click: function (obj) {
+                                btnList({
+                                    ModuleId: obj.data.id
+                                });
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            InitialModuleTree();
+
+            //按钮事件 通过按钮事件才能加载
+            util.event('lay-demo', {
+                setChecked: function () {
+                    tree.setChecked('treedemo', modeleval.split(',')); //勾选指定节点
+                }
+            });
+
+            //菜单列表
+            var menucon = {};  //table的参数，如搜索key，点击tree的id
+            var btnList = function (options) {
+                if (options != undefined) {
+                    $.extend(menucon, options);
+                }
+                Layuitable.reload('btnList', {
+                    url: '/FrameModuleElement/LoadMenus',
+                    where: menucon
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            }
+
+
+            function UpdateRoleModule(roleid, treeid, isAdd) {
+                var url = '/FrameRelations/AddRelations';
+                if (isAdd == false) {
+                    var url = '/FrameRelations/DelRelations';
+                }
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { FirstId: roleid, SecondId: treeid, RelationType: "RoleModule" },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            layer.msg("操作成功");
+                        }
+                    }
+                });
+            }
+
+            function Updatemodeleval(roleid) {
+                var RetVal = "";
+                layui.tree.reload('treedemo');
+                $.ajax({
+                    url: "/FrameRelations/LoadModuleByRoleId",
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { roleid: roleid  },
+                    dataType: "json",
+                    success: function (data) {
+                         
+                        var Mydata = data.data;
+                        if (data.code == 200) {
+                            $.each(Mydata, function (index, obj) {
+                                if (Mydata[index].IsCheck == "1" && Mydata[index].IsThird == "1") {
+                                    RetVal += Mydata[index].ModuleId+",";
+                                }
+                            })
+
+                            if (RetVal != "") {
+                                modeleval = RetVal;
+                                isLeftClick = true;
+                                $("#treecheck").click();
+                            }
+                            modeleval = "";
+                        }
+                    }
+                });
+
+            }
+
+        });
+
+
+        //表格行点击变色
+        $(document).on('click', '.layui-table-view .layui-table-body tr', function (event) {
+            var trElem = $(this);
+            var tableView = trElem.closest('.layui-table-view');
+            tableView.find('.layui-table-body tr.table_tr_click').removeClass('table_tr_click');
+            tableView.find('.layui-table-body tr[data-index="' + trElem.data('index') + '"]').addClass('table_tr_click');
+        });
+
+    </script>
+    <script type="text/html" id="Index">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+}
+
+

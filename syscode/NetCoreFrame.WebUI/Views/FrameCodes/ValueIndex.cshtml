@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewData["Title"] = "数据字典明细";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form class="layui-form">
+    <div class="layui-row">
+        <table id="mainList" lay-filter="mainList" class="layui-table"
+               lay-size="sm"></table>
+    </div>
+
+</form>
+@section Scripts{
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="addNewData">新增一行</button>
+        </div>
+    </script>
+    <script type="text/javascript">
+        var index;
+        var CodeID=@ViewBag.CodeID;
+        layui.use(['layer', 'table', "tree"], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+            var Layuitable = layui.table;
+
+            var columns = [
+
+                { field: 'PCodeName', title: '字典名称' },
+                { field: 'ItemName', title: '明细名称',edit: 'text' },
+                { field: 'ItemValue', title: '明细值', edit: 'text' },
+                { field: 'Sort', title: '排序',edit: 'text' },
+                { field: 'Operate', title: '操作', templet: '#Operate' }
+            ];
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#mainList',
+                page: true,
+                url: '/FrameCodes/ValueAll?CodeID=@ViewBag.CodeID',
+                toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+                cols: [columns]
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true
+            });
+
+            //主列表加载，可反复调用进行刷新
+            var config = {};  //table的参数，如搜索key，点击tree的id
+            var mainList2 = function (options) {
+                console.log("刷新了");
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                debugger;
+                Layuitable.reload('mainList', {
+                      url: '/FrameCodes/ValueAll?CodeID='+CodeID,
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            };
+
+             //头工具栏事件
+            Layuitable.on('toolbar(mainList)', function(obj){
+                switch(obj.event){
+                    case 'addNewData':
+                        console.log("新增一行 CodeID:" +@ViewBag.CodeID+",CodeIDVar:" + CodeID);
+                        AddCodeValue(CodeID);
+                        mainList2();
+                   
+                    break;
+
+                };
+            });
+
+              //监听单元格编辑
+              Layuitable.on('edit(mainList)', function(obj){
+                var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                      , field = obj.field; //得到字段
+                  UpdateCodeValue(field, value, data.ID);
+                 //layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+              });
+            //监听表格内部按钮
+            Layuitable.on('tool(mainList)', function (obj) {
+
+                var data = obj.data;
+                if (obj.event === 'delete') {      //删除
+                    Delete(data.ID);
+                   
+                }
+
+            });
+        });
+
+        function ShowNotice() {
+            var noticeIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            layer.msg("操作成功");
+            layer.close(noticeIndex);
+            location.reload();//弹出层结束后，刷新主页面
+        }
+
+        function Delete(delid) {
+            var idarr = new Array();//声明数组
+            idarr[0] = delid;
+            $.ajax({
+                url: '/FrameCodes/DeleteValue',
+                type: "POST",
+                async: false,
+                traditional: true,//传数组一定要加的
+                data: { "ids": idarr },
+                dataType: "json",
+                success: function (data) {
+                    ShowNotice();
+                }
+            });
+        }
+        function UpdateCodeValue(key, value,id) {
+             $.ajax({
+                    url: '/FrameCodes/UpdateCodeValue',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: {
+                        "ZDName": key,
+                        "ZDCode": value,
+                        "ID":id
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                           // ShowNotice();
+                        }
+                    }
+                });
+        }
+         function AddCodeValue(CodeID) {
+             $.ajax({
+                    url: '/FrameCodes/CreateValue',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: {
+                       "PID": CodeID
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                           // ShowNotice();
+                        }
+                    }
+                });
+        }
+        $('.layui-btn').on('click', function () {
+
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听页面主按钮操作
+        var active = {
+
+            btnDel: function () {      //批量删除
+                var table = layui.table;
+                var checkStatus = table.checkStatus('mainList');
+                var datas = checkStatus.data;
+                var id = new Array();//声明数组
+                for (var i in datas) {
+                    id[i] = datas[i].ID;//得到复选框的值
+                }
+                $.ajax({
+                    url: '/FrameCodes/Delete',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "ids": id },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            ShowNotice();
+                        }
+                    }
+                });
+            }
+
+
+            , search: function () {   //搜索
+                mainList({ key: $('#key').val() });
+            }
+            , btnRefresh: function () {
+                mainList();
+            }
+        };
+
+
+    </script>
+    <script type="text/html" id="Operate">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="delete">删除</a>
+    </script>
+}
+
+

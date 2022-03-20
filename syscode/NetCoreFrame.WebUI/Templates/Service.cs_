@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using NetCoreFrame.Core.Request;
+using NetCoreFrame.Core.Response;
+using NetCoreFrame.Entity;
+using NetCoreFrame.Entity.FrameEntity;
+using NetCoreFrame.Repository.Interface;
+using System.Linq.Expressions;
+using NetCoreFrame.Core.Utils;
+
+namespace NetCoreFrame.Service
+{
+    /// <summary>
+    /// {TableName}
+    /// </summary>
+    public class {TableName}Service : BaseService<{TableName}>
+    {
+      
+        private NetCoreFrameDBContext _dbContext;
+        public {TableName}Service(IRepository<{TableName}> repository 
+            , NetCoreFrameDBContext dBContext) : base(repository)
+        {
+           
+            _dbContext = dBContext;
+        }
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="role"></param>
+        public void Add({TableName} model)
+        {
+            _repository.Add(model);
+        }
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public TableData Load(PageRequest request,{TableName} model)
+        {
+
+            Expression<Func<{TableName}, bool>> expression = t => true;  
+            {SearchField}
+            var datalist = _repository.Find(request.page, request.limit, "CreateTime desc",expression);
+            return new TableData
+            {
+			    
+                count = datalist.Count(),
+                data = datalist
+            };
+            
+        }
+      
+
+    }
+}

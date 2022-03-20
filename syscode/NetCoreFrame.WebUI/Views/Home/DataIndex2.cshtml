@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <met.table_timecharset ="utf-8">
+        <title>九宫格</title>
+        <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+        <script src="~/js/vue/vue.global.js"></script>
+        <script src="~/js/axios.min.js"></script>
+        <style>
+            body {
+                color: red;
+                background-color: #000000;
+            }
+
+            .myinner {
+                padding: 10px;
+                width: 30%;
+                display: inline-block;
+                text-align: center;
+                color: red;
+            }
+
+            .layui-table td, .layui-table th {
+                text-align: center;
+                color: forestgreen;
+                font-weight: bold;
+                font-size: 20px;
+                border: 3px solid red;
+                background-color: #000000;
+            }
+        </style>
+</head>
+<body>
+    <div id="app">
+        <div class="header" style="position:relative;margin:10px 10px 30px 10px;font-size:20px">
+            <p style="text-align:center;font-weight:bold; font-size: 28px;">{{message}}</p>
+            <p style="text-align:center;font-weight:bold; font-size: 28px; ">{{messagesub}}</p>
+            <span style="position:absolute;right:90px;top:0px;">{{nowdate}}</span>
+        </div>
+        <div class="layui-row" style="padding: 8px 50px;text-align: center;">
+
+            <div class="myinner" v-for="(item,index) in datalist">
+                <table class="layui-table" style="border:1px solid black">
+                    <tbody>
+                        <tr>
+                            <th colspan="2">{{item.dataName}}</th>
+                        </tr>
+                        <tr>
+                            <td>排放标准</td>
+                            <td>实时数据</td>
+                        </tr>
+                        <tr>
+                            <td>{{item.data_Stand}}</td>
+                            <td>{{item.data_Real}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="layui-row" style="padding: 8px 50px;text-align: center;">
+
+            <div class="myinner" v-for="(item,index) in datalist2">
+                <table class="layui-table" style="border:1px solid black">
+                    <tbody>
+                        <tr>
+                            <th colspan="2">{{item.dataName}}</th>
+                        </tr>
+                        <tr>
+                            <td>排放标准</td>
+                            <td>实时数据</td>
+                        </tr>
+                        <tr>
+                             <td>{{item.data_Stand}}</td>
+                            <td>{{item.data_Real}}</td>
+                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="layui-row" style="padding: 8px 50px;text-align: center;">
+
+            <div class="myinner" v-for="(item,index) in datalist3">
+                <table class="layui-table" style="border:1px solid black">
+                    <tbody>
+                        <tr>
+                            <th colspan="2">{{item.dataName}}</th>
+                        </tr>
+                        <tr>
+                            <td>排放标准</td>
+                            <td>实时数据</td>
+                        </tr>
+                        <tr>
+                            <td>{{item.data_Stand}}</td>
+                            <td>{{item.data_Real}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</body>
+<script>
+    const VueApp = {
+        data() {
+            return {
+                onetime:"",
+                nowdate:"",
+                datalist:[],
+                datalist2:[],
+                datalist3:[],
+                message: "江西省修水赣北钨业有限公司",
+                messagesub: "废水废气总排口在线监控实时数据公示",
+                currentday: "2022-03-08 22:10:00",
+
+
+            }
+        },
+
+        methods: {
+            getArea: function(area) {
+                return String(area).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            },
+
+             load:function()
+             {
+                  axios
+                  .get('/home/board/data')
+                  .then(response =>
+                   {
+                       this.datalist=response.data.waterDatas;
+                       this.datalist2=response.data.waterDatas2;
+                       this.datalist3=response.data.waterDatas3;
+                       this.nowdate=response.data.nowDate;
+                       debugger;
+                       console.log("datalist:"+this.datalist.dataName);
+                   })
+                   .catch(function (error)
+                   { // 请求失败处理
+                       console.log(error);
+                    });
+             }
+        },
+        mounted() {
+              this.load();
+              var that = this;
+              that.onetime=setInterval(function()
+              {
+                  console.log("开始轮询")
+                  that.load();
+              },5000);
+        },
+        beforeDestroy() {
+               clearInterval(this.load);
+        }
+
+    }
+    Vue.createApp(VueApp).mount("#app")
+</script>
+</html>

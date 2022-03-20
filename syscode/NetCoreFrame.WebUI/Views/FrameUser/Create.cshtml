@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "CreateAcc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <form asp-action="Create" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+                <SelectList items="@ViewBag.Rolelist" name="RoleID" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="UserName" required lay-verify="required"
+                       placeholder="用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-block">
+                <input type="text" name="LoginID" required lay-verify="required"
+                       placeholder="账号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="Password" required lay-verify="required"
+                       placeholder="密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">关联设备Id</label>
+            <div class="layui-input-block">
+                <input type="text" name="EquipId" required lay-verify="required"
+                       placeholder="关联设备Id" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style='text-align:center;margin:0 auto;margin-top:10px'>
+                <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+@section Scripts{
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+
+            var result = JSON.parse(data);
+            if (result.Code == 200) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        }
+
+    </script>
+
+}
+

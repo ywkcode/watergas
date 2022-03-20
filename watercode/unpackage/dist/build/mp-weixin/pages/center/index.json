@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "修水赣北钨业有限公司-总排口监测点",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "default",
+  "usingComponents": {
+    "u-subsection": "/uview-ui/components/u-subsection/u-subsection",
+    "myarcbar": "/components/myarcbar/myarcbar",
+    "u-tag": "/uview-ui/components/u-tag/u-tag",
+    "u-gap": "/uview-ui/components/u-gap/u-gap",
+    "myarea": "/components/myarea/myarea",
+    "mytable": "/components/mytable/mytable",
+    "mydefinetable": "/components/mydefinetable/mydefinetable"
+  }
+}

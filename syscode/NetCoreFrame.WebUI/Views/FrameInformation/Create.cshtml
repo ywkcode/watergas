@@ -1,0 +1,81 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.Frame_Information
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            background-color: #e6e6e6;
+        }
+
+        .layui-inline {
+            margin-right: 0px !important;
+            width:100%;
+           
+        }
+        
+        .layui-form-item {
+            margin-bottom: 0px !important;
+        }
+    </style>
+}
+<form asp-action="Create" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST" id="uploadForm">
+
+    <div class="layui-inline">
+        <label asp-for="FileTitle" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="FileTitle" type="text" name="FileTitle" placeholder="文件标题" class="layui-input">
+            <span asp-validation-for="FileTitle" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="layui-inline">
+        <label asp-for="FileType" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <SelectLists code-name="多媒体" name="FileType"></SelectLists>
+        </div>
+        <a href="" ></a>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">附件上传</label>
+        <div class="layui-input-block">
+            <Upload name="AttachID"></Upload>
+        </div>
+    </div>
+
+    <div class="layui-inline">
+        <label asp-for="FileContent" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="FileContent" type="text" name="FileContent" placeholder="请输入文件内容" class="layui-input">
+            <span asp-validation-for="FileContent" class="text-danger"></span>
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block" style='text-align:center;margin:0 auto;'>
+            <button class="layui-btn" lay-submit lay-filter="formSubmit" type="submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+            debugger;
+            var result = JSON.parse(data);
+            if (result.Status == true) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        }
+
+
+    </script>
+
+}
+

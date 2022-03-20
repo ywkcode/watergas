@@ -1,0 +1,114 @@
+﻿@model NetCoreFrame.Entity.Wedrent.W_Order
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Update" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+   
+    <div class="layui-form-item">
+        <label asp-for="OrderNumber" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="OrderNumber" type="text" name="OrderNumber"  readonly="readonly"
+                   autocomplete="off" class="layui-input" value="@Model.OrderNumber">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Weddingdate" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <form:DateTime name="Weddingdate" is-now="true" value="@Model.Weddingdate"></form:DateTime>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Customer" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="Customer" type="text" name="Customer" readonly="readonly"
+                   placeholder="客户" autocomplete="off" class="layui-input" value="@Model.Customer">
+            <span asp-validation-for="Customer" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="LinkTel" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="LinkTel" type="text" name="LinkTel"   readonly="readonly"
+                   placeholder="联系方式" autocomplete="off" class="layui-input" value="@Model.LinkTel">
+            <span asp-validation-for="LinkTel" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Address" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="Address" type="text" name="Address"  readonly="readonly"
+                   placeholder="地址" autocomplete="off" class="layui-input" value="@Model.Address">
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="PeiShi" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="PeiShi" type="text" name="PeiShi"  readonly="readonly"
+                   placeholder="配饰" autocomplete="off" class="layui-input" value="@Model.PeiShi">
+            <span asp-validation-for="PeiShi" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择商品</label>
+        <div class="layui-input-block">
+            <select name="select1" id="select1" xm-select="select1" style="width:100px;" lay-verify="required"  disabled="disabled">
+            </select>
+            <input asp-for="GoodsList" type="text" name="GoodsList" id="GoodsList"
+                   placeholder="配饰" autocomplete="off" class="layui-input" style="display:none">
+
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Remarks" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="Remarks" type="text" name="Remarks" readonly="readonly"
+                   placeholder="备注" autocomplete="off" class="layui-input" value="@Model.Remarks">
+            <span asp-validation-for="Remarks" class="text-danger"></span>
+        </div>
+    </div>
+    
+</form>
+@section Scripts{
+<script src="~/lib/layui/lay/modules/formSelects-v4.js"></script>
+ 
+<script type="text/javascript">
+
+    var formSelects = layui.formSelects;
+    $("#GoodsList").attr("value", "@ViewBag.GoodsList");
+    reloadSelect();
+    formSelects.on('select1', function (id, vals, val, isAdd, isDisabled) {
+
+        var value = $("#GoodsList").attr("value");
+        if (isAdd == false) {
+            $("#GoodsList").attr("value", value.replace(val.value, ""))
+        }
+        else {
+            $("#GoodsList").attr("value", value + "," + val.value);
+        }
+    });
+
+    layui.formSelects.opened('select1', function (id) {
+        reloadSelect();
+    });
+    function reloadSelect() {
+        formSelects.data('select1', 'server', {
+            url: '/WGoods/GetNotRentGoods?weddingDate=' + $("#Weddingdate").val() + "&OrderId=@ViewBag.OrderId" + "&GoodsList=@ViewBag.GoodsList"
+        });
+    }
+</script>
+}
+
+@section Styles
+{
+<link href="~/lib/layui/css/modules/formSelects-v4.css" rel="stylesheet" />
+<style type="text/css">
+    .btnlist {
+        float: right;
+        padding: 5px;
+    }
+</style>
+}

@@ -1,0 +1,17 @@
+﻿using NetCoreFrame.Entity.BaseEntity;
+using NetCoreFrame.Entity.Enum;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+namespace NetCoreFrame.Entity.FrameEntity
+{
+    /// <summary>
+    /// {TableName}
+    /// </summary>
+    public class {TableName} : CoreBaseEntity
+    {
+        {TableField}
+    }
+}

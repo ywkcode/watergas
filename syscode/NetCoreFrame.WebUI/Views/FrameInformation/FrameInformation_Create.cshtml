@@ -1,0 +1,99 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.Frame_Information
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script type="text/javascript" src="~/js/wangEditor/wangEditor.js"></script>
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            background-color: #e6e6e6;
+        }
+
+        .layui-inline {
+            margin-right: 0px !important;
+            width: 100%;
+        }
+        
+
+        .layui-form-item {
+            margin-bottom: 0px !important;
+        }
+        .w-e-text-container {
+            height: 150px !important;
+        }
+    </style>
+}
+
+<form class="layui-form layui-form-pane">
+    <div class="layui-inline">
+        <label asp-for="FileTitle" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="FileTitle" type="text" name="FileTitle" placeholder="文件标题" class="layui-input">
+            <span asp-validation-for="FileTitle" class="text-danger"></span>
+        </div>
+    </div>
+    @*<div class="layui-inline">
+        <label asp-for="FileTitleEn" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="FileTitleEn" type="text" name="FileTitleEn" placeholder="文件标题(英)" class="layui-input">
+            <span asp-validation-for="FileTitleEn" class="text-danger"></span>
+        </div>
+    </div>*@
+    <div class="layui-inline">
+        <label class="layui-form-label">发布日期</label>
+        <div class="layui-input-block">
+            <form:DateTime name="CreateTime" is-now="true"></form:DateTime>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label asp-for="CategoryName" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <SelectLists code-name="栏目类别" name="CategoryName"></SelectLists>
+        </div>
+        <a href=""></a>
+    </div>
+
+    <div class="layui-inline">
+        <label class="layui-form-label">封面图片</label>
+        <div class="layui-input-block">
+            <form:Upload name="ImgAttachID"  is-upload-img="true"  ></form:Upload>
+        </div>
+    </div> 
+    <form:Editor name="FileContent" editor-height="150px"></form:Editor>
+    @*<form:Editor name="FileContentEn" editor-height="150px"></form:Editor>*@
+</form>
+@section Scripts{
+
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+
+            var result = JSON.parse(data);
+            if (result.Status == true) {
+                $("#btnreset").click();
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        }
+        $('body').on('click', '#btn_finish', function () {
+            var TableInfo = $.myPlugin.getFormData();
+            debugger;
+            $.ajax({
+                url: '/FrameInformation/FrameInformation_Create',
+                type: "POST",
+                data: TableInfo,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    if (data.Code == 200) {
+                        $.myPlugin.closeWin();
+                    }
+                }
+            });
+        });
+    </script>
+
+}
+

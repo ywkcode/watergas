@@ -1,0 +1,100 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.Frame_Charts
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            background-color: #e6e6e6;
+        }
+
+        .layui-inline {
+            margin-right: 0px !important;
+            width: 100%;
+            margin-bottom: 0px !important;
+        }
+
+        .layui-form-item {
+            margin-bottom: 0px !important;
+        }
+    </style>
+}
+<form class="layui-form layui-form-pane">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label asp-for="ChartTitle" class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <input asp-for="ChartTitle" type="text" name="ChartTitle" placeholder="请输入报表标题" class="layui-input">
+                <span asp-validation-for="ChartTitle" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label asp-for="DataBase" class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <input asp-for="DataBase" type="text" name="DataBase" placeholder="请输入连接字符串" class="layui-input">
+                <span asp-validation-for="DataBase" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label asp-for="ChartStyle" class="layui-form-label"></label>
+            <div class="layui-input-block" style="margin-left: 1px; border: 1px solid #e6e6e6;">
+                <form:radio name="ChartStyle" code-name="报表风格" selectd-value="列表"></form:radio>
+            </div>
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label asp-for="ChartInfo" class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <input asp-for="ChartInfo" type="text" name="ChartInfo" placeholder="请输入报表简介" class="layui-input">
+                <span asp-validation-for="ChartInfo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label asp-for="DataSQL" class="layui-form-label"></label>
+
+            <div class="layui-input-block">
+                <textarea name="DataSQL" id="DataSQL" placeholder="请输入SQL" class="layui-textarea"></textarea>
+            </div>
+
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+
+        function afterSuccess(data) {
+            var result = JSON.parse(data);
+            if (result.Status == true) {
+                layer.close(layer.index);
+                parent.$('.refreshThis').click();
+            }
+        }
+        $('body').on('click', '#btn_finish', function () {
+            var TableInfo = $.myPlugin.getFormData(); 
+            $.ajax({
+                url: '/FrameCharts/Create',
+                type: "POST", 
+                data: TableInfo,
+                dataType: "json", 
+                traditional: true,
+                success: function (data)
+                {
+                   if (data.Code == 200)
+                    {
+                        $.myPlugin.closeWin();
+                    } 
+                }
+            });
+        });
+
+    </script>
+
+}
+

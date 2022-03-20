@@ -1,0 +1,313 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            background-color: #e6e6e6;
+        }
+    </style>
+}
+<button class="layui-btn layui-btn-sm" data-type="btnAdd">新建角色</button>
+<button class="layui-btn layui-btn-danger layui-btn-sm" data-type="btnDel">删除</button>
+<button class="layui-btn layui-btn-sm" data-type="btnEdit">修改</button>
+
+
+<form class="layui-form">
+    <div class="layui-row">
+
+        <div class="layui-col-xs4">
+            <table id="mainList" lay-filter="mainList" class="layui-table"
+                   lay-size="sm"></table>
+        </div>
+        <div class="layui-col-xs8">
+            <table id="childList" lay-filter="childList" class="layui-table"
+                   lay-size="sm"></table>
+        </div>
+    </div>
+
+</form>
+@section Scripts{
+
+    <script type="text/javascript">
+        var index;
+        var roleid;
+        layui.use(['layer', 'table', "tree"], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+
+            var Layuitable = layui.table;
+            var tree = layui.tree;
+            var treeSelect = layui.treeSelect;
+
+
+            var columns = [
+                  { checkbox: true, fixed: true },
+                { field: 'RoleName', title: '角色名称' }
+            ];
+
+            var columns2 = [
+                { checkbox: true, fixed: true },
+                { field: 'UserName', title: '用户名' },
+                { field: 'LoginID', title: '登陆账号' }
+
+            ];
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#mainList',
+                page: true,
+                url: '/FrameRole/All',
+                cols: [columns]
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true
+            });
+
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#childList',
+                page: true,
+                url: '/FrameRelations/LoadUserByRoleId',
+                cols: [columns2],
+                where: config
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true,
+                done: function (res, page, count) {
+
+                    for (var i = 0; i < count; i++) {
+                        if (res.data[i]["IsCheck"] == "1") {
+                            //实现选中效果
+                            res.data[i]["LAY_CHECKED"] = 'true'
+                            //$('tr[data-index=' + i + '] input[type="checkbox"]').prop('checked', true);
+                            //$('tr[data-index=' + i + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+                            $("div[lay-id=childList]").find('tr[data-index=' + i + '] input[type="checkbox"]').prop('checked', true);
+                            $("div[lay-id=childList]").find('tr[data-index=' + i + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+                            //$("#childList").find('tr[data-index=' + i + '] input[type="checkbox"]').prop('checked', true);
+                            //$("#childList").find('tr[data-index=' + i + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+                        }
+                    }
+                    ////可以自行添加判断的条件是否选中
+                    ////这句才是真正选中，通过设置关键字LAY_CHECKED为true选中，这里只对第一行选中
+                    //res.data[0]["LAY_CHECKED"] = 'true';
+                    ////下面三句是通过更改css来实现选中的效果
+                    //var index = res.data[0]['LAY_TABLE_INDEX'];
+                    //$('tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+                    //$('tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+                }
+
+            });
+            //监听行单击事件（单击事件为：rowDouble）
+            Layuitable.on('row(mainList)', function (obj) {
+
+                menuList({ RoleId: obj.data.ID });
+                roleid = obj.data.ID;
+                
+            });
+            //监听复选框选中事件
+            Layuitable.on('checkbox(childList)', function (obj) {
+                //选择成功 增加记录
+
+                if (roleid == undefined) {
+                    layer.msg("请选择角色");
+                    return;
+                }
+                //建立RoleUser关系
+                UpdateRoleUser(roleid, obj.data.ID, obj.checked);
+
+            })
+
+
+
+
+            //主列表加载，可反复调用进行刷新
+            var config = {};  //table的参数，如搜索key，点击tree的id
+
+            var mainList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                table.reload('mainList', {
+                    url: '/FrameRole/LoadUserByRoleId',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            };
+
+
+            var menuList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                Layuitable.reload('childList', {
+                    url: '/FrameRelations/LoadUserByRoleId',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+
+            };
+        });
+
+
+
+        function Create() {
+          
+            index= layer.open
+                ({
+                    type: 2,
+                    title:'新建',
+                         content: '@Url.Action("Create", "FrameRole")',
+                         area: ['700px', '500px'],
+                    btnAlign: 'c',
+                });
+        }
+        function UpdateRoleUser(roleid, userid, isAdd) {
+            var url = '/FrameRelations/AddRelations';
+            if (isAdd == false) {
+                var url = '/FrameRelations/DelRelations';
+            }
+            $.ajax({
+                url: url,
+                type: "POST",
+                traditional: true,//传数组一定要加的
+                data: { roleid: roleid, userid: userid, AddRelations:"RoleUser" },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Code == 200) {
+                        layer.msg("操作成功");
+                    }
+                }
+            });
+        }
+        function Edit(id) {
+             index = layer.open
+                ({
+                    type: 2,
+                    title:'编辑',
+                    content: '/FrameModule/Edit?id=' + id,
+                         area: ['500px', '300px'],
+                    btnAlign: 'c',
+                    end: function () {
+                        ShowNotice();
+                    }
+                });
+
+        }
+
+        function ShowNotice() {
+            var noticeIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            layer.msg("操作成功");
+            layer.close(noticeIndex);
+            location.reload();//弹出层结束后，刷新主页面
+        }
+
+        $('.layui-btn').on('click', function () {
+           
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听页面主按钮操作
+        var active = {
+
+            btnDel: function ()
+            {      //批量删除
+                var table = layui.table;
+                var checkStatus = table.checkStatus('mainList');
+                var datas = checkStatus.data;
+                var id = new Array();//声明数组
+                for (var i in datas) {
+                    id[i] = datas[i].ID;//得到复选框的值
+                }
+                $.ajax({
+                    url: '/FrameRole/Delete',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "ids": id},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            ShowNotice();
+                        }
+                    }
+                });
+             }
+            , btnAdd: function () {  //添加
+
+                Create();
+            }
+            , btnEdit: function () {  //编辑
+                var checkStatus = layui.table.checkStatus('mainList')
+                    , data = checkStatus.data;
+                if (data.length != 1) {
+                    layer.msg("请选择编辑的行，且同时只能编辑一行");
+                    return;
+                }
+                //editDlg.update(data[0]);
+                Edit(data[0]["ID"]);
+            }
+            , btnMenuAdd: function () {
+
+            }
+            , search: function () {   //搜索
+                mainList({ key: $('#key').val() });
+            }
+            , btnRefresh: function () {
+                mainList();
+            }
+        };
+        var editDlg = function () {
+            var vm;
+            var update = false;  //是否为更新
+            var show = function (data) {
+                var title = update ? "编辑信息" : "添加";
+                 index = layer.open
+                ({
+                    type: 2,
+                    title: title,
+                    content: '@Url.Action("Create", "FrameRole")',
+                    area: ['700px', '500px'],
+                    btnAlign: 'c',
+
+                });
+            }
+            return {
+                add: function () { //弹出添加
+                    update = false;
+                    show({
+                        Id: ''
+                    });
+                },
+                update: function (data) { //弹出编辑框
+                    update = true;
+                    show(data);
+                }
+            };
+        }();
+
+        $(document).on('click', '.layui-table-view .layui-table-body tr', function (event) {
+            var trElem = $(this);
+            var tableView = trElem.closest('.layui-table-view');
+            tableView.find('.layui-table-body tr.table_tr_click').removeClass('table_tr_click');
+            tableView.find('.layui-table-body tr[data-index="' + trElem.data('index') + '"]').addClass('table_tr_click');
+        });
+    </script>
+}
+
+

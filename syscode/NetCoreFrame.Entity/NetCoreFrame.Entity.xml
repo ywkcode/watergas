@@ -1,0 +1,550 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NetCoreFrame.Entity</name>
+    </assembly>
+    <members>
+        <member name="T:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity">
+            <summary>
+            核心实体表
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.UpdateTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.UpdateBy">
+            <summary>
+            修改人
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.Status">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.BaseEntity.CoreBaseEntity.IsDeleted">
+            <summary>
+            是否删除
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.BaseEntity.TopBaseEntity">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.EnumStatus">
+            <summary>
+            枚举类
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Entity.Enum.EnumStatus.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.RelationType">
+            <summary>
+            关系类型
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.RelationType.RoleUser">
+            <summary>
+            角色—用户
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.RelationType.RoleModule">
+            <summary>
+            角色-模块 
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.RelationType.Attach">
+            <summary>
+            主表-附件表
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.TrueOrFlase">
+            <summary>
+            真或假
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.TrueOrFlase.True">
+            <summary>
+            真
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.TrueOrFlase.Flase">
+            <summary>
+            假
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.PrizeType">
+            <summary>
+            奖品类型
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.PrizeType.ShareDou">
+            <summary>
+            分享豆
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.PrizeType.RedPaper">
+            <summary>
+            红包
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.PrizeMethod">
+            <summary>
+            奖励情景
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.PrizeMethod.UsePay">
+            <summary>
+            使用支付
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.PrizeMethod.PayBack">
+            <summary>
+            支付返现
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.PrizeMethod.Login">
+            <summary>
+            登陆
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.PrizeMethod.Share">
+            <summary>
+            分享
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.PrizeMethod.ChouJiang">
+            <summary>
+            抽奖
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.ModuleType">
+            <summary>
+            模块类型  
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.ModuleType.SecKill">
+            <summary>
+            秒杀天地
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.ModuleType.DisCount">
+            <summary>
+            优惠券
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.ObsloteType">
+            <summary>
+            Cache策略类型  永久/绝对过期/滑动过期
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.ObsloteType.Never">
+            <summary>
+            永久
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.ObsloteType.Absolutely">
+            <summary>
+            绝对过期
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.ObsloteType.Relative">
+            <summary>
+            滑动过期 如果期间查询或更新，就再次延长
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.Enum.ChatType">
+            <summary>
+            弹幕状态
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.ChatType.Login">
+            <summary>
+            进入直播
+            </summary>
+        </member>
+        <member name="F:NetCoreFrame.Entity.Enum.ChatType.SendMsg">
+            <summary>
+            发送弹幕
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_Codes">
+            <summary>
+            数据字典
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Codes.CodeName">
+            <summary>
+            字典名称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Codes.CodeID">
+            <summary>
+            CodeID
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_CodesValue">
+            <summary>
+            字典内容
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_CodesValue.PID">
+            <summary>
+            PID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_CodesValue.CodeValueID">
+            <summary>
+            CodeValueID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_CodesValue.ItemName">
+            <summary>
+            字典名称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_CodesValue.ItemValue">
+            <summary>
+            字典值
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_CodesValue.ItemEng">
+            <summary>
+            字典名称英文
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_Dept">
+            <summary>
+            部门管理
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_FileUpload">
+            <summary>
+            文件上传
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_FileUpload.FileName">
+            <summary>
+            文件名称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_FileUpload.FilePath">
+            <summary>
+            文件物理路径
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_FileUpload.FileImgUrl">
+            <summary>
+            文件图片地址
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_FileUpload.FileType">
+            <summary>
+            文件类别
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_InfoComments">
+            <summary>
+            Frame_InfoComments
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_InfoComments.Comments">
+            <summary>
+            评论信息
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_InfoComments.FileID">
+            <summary>
+            信息Id
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_InfoComments.Commenter">
+            <summary>
+            评论人
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_InfoComments.CUserId">
+            <summary>
+            CUserId
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_InfoHistory">
+            <summary>
+            信息搜索历史
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_InfoHistory.CUserId">
+            <summary>
+            CWIOS用户ID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_InfoHistory.KeyWord">
+            <summary>
+            搜索关键词
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_Information">
+            <summary>
+            Frame_Information
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.AttachID">
+            <summary>
+            附件ID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.FileType">
+            <summary>
+            文件类型
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.DownloadCount">
+            <summary>
+            下载量
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.BoardCount">
+            <summary>
+            播放次数
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.FileContent">
+            <summary>
+            文件内容
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.FileTitle">
+            <summary>
+            文件标题
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.ImgAttachID">
+            <summary>
+            封面图ID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.VideoLength">
+            <summary>
+            视频时长（秒）
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.VideoMinLength">
+            <summary>
+            视频时长Str
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.CategoryName">
+            <summary>
+            栏目名称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.RegardCount">
+            <summary>
+            点赞次数
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.RelayCount">
+            <summary>
+            转发次数
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.CommentCount">
+            <summary>
+            评论次数
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.EndDate">
+            <summary>
+            结束日期
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.FrameEntity.Frame_Information.LiveRoomID">
+            <summary>
+            直播间ID
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_Module">
+            <summary>
+            模块表
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_ModuleElement">
+            <summary>
+            模块元素表
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_Relations">
+            <summary>
+            关系表
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.FrameEntity.Frame_TableInfo">
+            <summary>
+            模块表名
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.LiveEntity.LiveRoom">
+            <summary>
+            直播间
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.RoomName">
+            <summary>
+            直播间名称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.StreamName">
+            <summary>
+            流名称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.DomainName">
+            <summary>
+            域名
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.CUserId">
+            <summary>
+            CUserId 
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.PushUrl">
+            <summary>
+            推流地址
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.BoardUrl">
+            <summary>
+            播放地址
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.Mibile">
+            <summary>
+             手机号
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoom.UserName">
+            <summary>
+            会员名称
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.LiveEntity.LiveRoomChat">
+            <summary>
+            直播间弹幕
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoomChat.RoomID">
+            <summary>
+            直播间ID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoomChat.NickName">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoomChat.ChatType">
+            <summary>
+            弹幕动作
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.LiveEntity.LiveRoomChat.Conetent">
+            <summary>
+            弹幕内容
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.NetCoreFrameDBContext">
+            <summary>
+            上下文
+            </summary>
+        </member>
+        <member name="M:NetCoreFrame.Entity.NetCoreFrameDBContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{NetCoreFrame.Entity.NetCoreFrameDBContext})">
+            <summary>
+            初始化
+            </summary>
+            <param name="options"></param>
+        </member>
+        <member name="M:NetCoreFrame.Entity.NetCoreFrameDBContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            重载
+            </summary>
+            <param name="modelBuilder"></param>
+        </member>
+        <member name="T:NetCoreFrame.Entity.ViewModel.BusinessApplyViewModel">
+            <summary>
+            商家入驻-申请
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.BusinessApplyViewModel.Name">
+            <summary>
+            联系人姓名
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.BusinessApplyViewModel.LinkTel">
+            <summary>
+            联系方式
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.BusinessApplyViewModel.ShopName">
+            <summary>
+            店铺名称
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.BusinessApplyViewModel.ShopAddress">
+            <summary>
+            店铺地址
+            </summary>
+        </member>
+        <member name="T:NetCoreFrame.Entity.ViewModel.SelectListViewModel">
+            <summary>
+            下拉框视图
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.SelectListViewModel.ID">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.SelectListViewModel.Text">
+            <summary>
+            下拉框值显示
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.SelectListViewModel.Value">
+            <summary>
+            下拉框值
+            </summary>
+        </member>
+        <member name="P:NetCoreFrame.Entity.ViewModel.SelectListViewModel.IsChoose">
+            <summary>
+            是否选中
+            </summary>
+        </member>
+    </members>
+</doc>

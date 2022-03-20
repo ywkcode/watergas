@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/css/login.css" rel="stylesheet" />
+    <style type="text/css">
+        .layui-btn {
+            width: 40% !important;
+        }
+    </style>
+}
+<div class="login">
+    <form asp-controller="Account" asp-action="SysLogin" method="post" data-ajax="true" data-ajax-success="afterSuccess">
+        <h1>监测系统</h1>
+        <div class="layui-form-item">
+            <input type="text" name="username" class="layui-input" placeholder="用户名" />
+
+        </div>
+        <div class="layui-form-item">
+            <input type="password" name="Password" class="layui-input" placeholder="密码" />
+        </div>
+        <div class="layui-row" style="text-align:center">
+            <button type="submit" class="layui-btn login_btn" Tex="登陆" style="text-align:center;">登陆</button>
+
+            @*<button class="layui-btn login_btn layui-bg-orange" Tex="注册" onclick='@Url.Action("Regist","Account")' style="float:right">注册</button>*@
+        </div>
+    </form>
+    @section Scripts{
+        <script type="text/javascript">
+         function afterSuccess(data)
+         {
+             debugger;
+             if (data.status == true) {
+                 console.log(data.message);
+                 if (data.message == "Station")
+                 {
+                     window.location.href = '@Url.Action("ImagesView","Home")';
+                 }
+                 else
+                 {
+                      window.location.href = '@Url.Action("Index","Home")';
+                 }
+
+             }
+
+             else {
+                 layer.msg("用户名或密码错误！");
+             }
+
+         }
+
+        </script>
+    }
+
+
+</div>

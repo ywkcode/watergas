@@ -1,0 +1,292 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style type="text/css">
+        .layui-colla-title {
+            position: relative;
+            height: 30px;
+            line-height: 30px;
+            padding: 0 15px 0 35px;
+            color: white;
+            background-color: #1AA094;
+            cursor: pointer;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .layui-colla-content {
+            border-color: #1AA094;
+            padding: 5px;
+        }
+
+        .layui-form-label {
+            padding: 8px 10px;
+            width: 60px;
+        }
+
+        .layui-input, .layui-select, .layui-textarea {
+            height: 30px;
+        }
+
+        .layui-collapse {
+            border-radius: 11px;
+            margin-bottom: 7px;
+        }
+    </style>
+
+}
+<div class="layui-collapse">
+
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">搜索条件</h2>
+        <div class="layui-colla-content layui-show">
+            <div class="layui-input-inline">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="FileTitle" id="FileTitle" placeholder="文件标题" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">发布日期</label>
+                    <div class="layui-input-inline">
+                        <form:DateTime name="CreateTime" is-now="false"></form:DateTime>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<form class="layui-form">
+    <div class="layui-row">
+        <script type="text/html" id="toolbar">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-bg-blue" lay-event="btnSearch">查询</button>
+                <button class="layui-btn layui-btn-sm" lay-event="btnAdd">新建</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="btnDel">删除</button>
+            </div>
+        </script>
+        <table id="mainList" lay-filter="mainList" class="layui-table"
+               lay-size="sm"></table>
+    </div>
+
+</form>
+@section Scripts{
+
+    <script type="text/javascript">
+        var index;
+        layui.use(['layer', 'table', "tree"], function ()
+        {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+            var  Layuitable = layui.table;
+            var columns = [
+                { checkbox: true, fixed: true },
+                { field: 'Index', title: '序号', width: 60, templet: '#Index' },
+                { field: 'CategoryName', title: '栏目类别',width:120 },
+                { field: 'FileTitle', title: '直播标题' },
+                 { field: 'LiveRoomID', title: '直播间' },
+                { field: 'CreateBy', title: '发布人', width: 120 },
+                {
+                    field: 'CreateTime', title: '直播日期', width: 350, templet: function (data) {
+                        return data.CreateTime + "至" + data.EndDate;
+                    }
+                },
+            ];
+
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#mainList',
+                page: true,
+                url: '/FrameInformation/LiveAll',
+			    limits: [15,20,25]
+                , limit: 20 //每页默认显示的数量,
+                ,toolbar: '#toolbar', //开启头部工具栏，并为其绑定左侧模板
+                cols: [columns]
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true
+            });
+            //主列表加载，可反复调用进行刷新
+            var config = {};  //table的参数，如搜索key，点击tree的id
+            var refreshList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                Layuitable.reload('mainList', {
+                    url: '/FrameInformation/LiveAll',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            };
+              //头工具栏事件
+              Layuitable.on('toolbar(mainList)', function(obj){
+                switch(obj.event){
+                  case 'btnAdd':
+                        Create();
+                  break;
+                    case 'btnDel':
+                      Delete();
+                  break;
+
+                };
+              });
+             //监听表格内部按钮
+            Layuitable.on('tool(mainList)', function (obj)  {
+             var data = obj.data;
+
+            if (obj.event === 'detail') {      //查看
+                index = layer.open
+                ({
+                    type: 2,
+                    title: '设置',
+                    content: '@Url.Action("ValueIndex", "Frame_Information")?CodeID=' + data.CodeID,
+                    area: ['650px', '500px'],
+                    btnAlign: 'c',
+                });
+            }
+            });
+
+             //监听页面主按钮操作
+             var active = {
+                btnDel: function ()
+                 {
+                     debugger;
+                     //批量删除
+                    var table = layui.table;
+                    var checkStatus = table.checkStatus('mainList');
+                    var datas = checkStatus.data;
+                    var id = new Array();//声明数组
+                    for (var i in datas) {
+                        id[i] = datas[i].ID;//得到复选框的值
+                    }
+                    $.ajax({
+                        url: '/FrameInformation/Delete',
+                        type: "POST",
+                        traditional: true,//传数组一定要加的
+                        data: { "ids": id},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.Code == 200) {
+                                ShowNotice();
+                            }
+                        }
+                    });
+                 }
+                , btnAdd: function () {  //添加
+                    Create();
+                }
+                , btnEdit: function () {  //编辑
+                    var checkStatus = layui.table.checkStatus('mainList')
+                        , data = checkStatus.data;
+                    if (data.length != 1) {
+                        layer.msg("请选择编辑的行，且同时只能编辑一行");
+                        return;
+                    }
+                    //editDlg.update(data[0]);
+                    Edit(data[0]["ID"]);
+                }
+
+                , btnSearch: function () {   //搜索
+
+                    Layuitable.reload('mainList', {
+                        url: '/FrameInformation/LiveAll',
+                        where: {
+                            CategoryName:"方寸直播"
+                        }
+                        , response: {
+                            statusCode: 200 //规定成功的状态码，默认：0
+                        }
+                    });
+
+                }
+                , btnRefresh: function () {
+                    refreshList();
+                }
+            };
+
+            $('.layui-btn').on('click', function ()
+            {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+        });
+        function Create() {
+              index = layer.open
+                ({
+                    type: 2,
+                    title:'新建',
+                    content: '@Url.Action("LiveCreate", "FrameInformation")',
+                    area: ['700px', '650px'],
+                    btnAlign: 'c',
+                });
+        }
+        function Delete() {
+               var table = layui.table;
+                    var checkStatus = table.checkStatus('mainList');
+                    var datas = checkStatus.data;
+                    var id = new Array();//声明数组
+                    for (var i in datas) { 
+                        id[i] = datas[i].ID;//得到复选框的值
+                    }
+                    $.ajax({
+                        url: '/FrameInformation/Delete',
+                        type: "POST",
+                        traditional: true,//传数组一定要加的
+                        data: { "ids": id},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.Code == 200) {
+                                ShowNotice();
+                            }
+                        }
+                    });
+        }
+        function Edit(id) {
+             index = layer.open
+                ({
+                    type: 2,
+                    title:'编辑',
+                    content: '/Frame_Information/Edit?id=' + id,
+                         area: ['500px', '300px'],
+                    btnAlign: 'c',
+                    end: function () {
+                        ShowNotice();
+                    }
+                });
+        }
+
+        function ShowNotice() {
+            var noticeIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            layer.msg("操作成功");
+            layer.close(noticeIndex);
+            location.reload();//弹出层结束后，刷新主页面
+        }
+
+
+
+    </script>
+    <script type="text/html" id="Operate">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">设置</a>
+    </script>
+    <script type="text/html" id="Index">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+}
+
+

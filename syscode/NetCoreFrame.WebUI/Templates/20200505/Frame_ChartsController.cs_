@@ -1,0 +1,67 @@
+using System;
+using NetCoreFrame.Core.CommonHelper;
+using NetCoreFrame.Core.Request;
+using NetCoreFrame.Core.Response;
+using NetCoreFrame.Entity.FrameEntity;
+using NetCoreFrame.Service;
+using NetCoreFrame.WebUI.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+
+namespace NetCoreFrame.WebUI.Controllers
+{
+    public class Frame_ChartsController : Controller
+    {
+        private readonly Frame_ChartsService _service;
+
+        public Frame_ChartsController(Frame_ChartsService service)
+        {
+            _service = service;
+        }
+        public IActionResult Frame_Charts_Index()
+        {
+            return View();
+        } 
+        public string All(PageRequest request,Frame_Charts model)
+        {
+            TableData data = new TableData();
+            data = _service.Load(request,model);
+            return JsonHelper.Instance.Serialize(data);
+        }
+        public IActionResult  Frame_Charts_Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public string Create(Frame_Charts model)
+        {
+            PageResponse resp = new PageResponse();
+             model.CreateBy = CurrentUser.UserName; 
+             _service.Add(model);
+            return JsonHelper.Instance.Serialize(resp);
+        }
+
+        [HttpPost]
+        public string Delete(string[] ids)
+        {
+          
+            _service.BatchDelete(ids);
+            return JsonHelper.Instance.Serialize(new PageResponse());
+        }
+
+        public IActionResult Frame_Charts_Edit(string id)
+        {
+            var model = _service.Get(id);
+            return View(model);
+        }
+        [HttpPost]
+        public string Update(Frame_Charts model)
+        {
+            PageResponse resp = new PageResponse();
+           _service.Update(model);
+            return JsonHelper.Instance.Serialize(resp);
+        }
+
+    }
+}

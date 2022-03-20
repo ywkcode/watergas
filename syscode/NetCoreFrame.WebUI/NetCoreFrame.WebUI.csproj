@@ -1,0 +1,401 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>c2f836b5-8d18-4c33-a0e2-ffd4b51d116b</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\Index.cshtml_" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\Index.cshtml_" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\GooFlow\fonts\iconflow.js" />
+    <None Include="wwwroot\GooFlow\fonts\iconflow.svg" />
+    <None Include="wwwroot\GooFlow\plugin\canvg.js" />
+    <None Include="wwwroot\GooFlow\plugin\html2canvas.js" />
+    <None Include="wwwroot\GooFlow\plugin\html2canvas.min.js" />
+    <None Include="wwwroot\GooFlow\plugin\jquery.min.js" />
+    <None Include="wwwroot\GooFlow\plugin\jquery.min.map" />
+    <None Include="wwwroot\GooFlow\plugin\json2.js" />
+    <None Include="wwwroot\GooFlow\plugin\promise.min.js" />
+    <None Include="wwwroot\js\ckeditor\adapters\jquery.js" />
+    <None Include="wwwroot\js\ckeditor\build-config.js" />
+    <None Include="wwwroot\js\ckeditor\CHANGES.md" />
+    <None Include="wwwroot\js\ckeditor\ckeditor.js" />
+    <None Include="wwwroot\js\ckeditor\config.js" />
+    <None Include="wwwroot\js\ckeditor\lang\af.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ar.js" />
+    <None Include="wwwroot\js\ckeditor\lang\bg.js" />
+    <None Include="wwwroot\js\ckeditor\lang\bn.js" />
+    <None Include="wwwroot\js\ckeditor\lang\bs.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ca.js" />
+    <None Include="wwwroot\js\ckeditor\lang\cs.js" />
+    <None Include="wwwroot\js\ckeditor\lang\cy.js" />
+    <None Include="wwwroot\js\ckeditor\lang\da.js" />
+    <None Include="wwwroot\js\ckeditor\lang\de.js" />
+    <None Include="wwwroot\js\ckeditor\lang\el.js" />
+    <None Include="wwwroot\js\ckeditor\lang\en-au.js" />
+    <None Include="wwwroot\js\ckeditor\lang\en-ca.js" />
+    <None Include="wwwroot\js\ckeditor\lang\en-gb.js" />
+    <None Include="wwwroot\js\ckeditor\lang\en.js" />
+    <None Include="wwwroot\js\ckeditor\lang\eo.js" />
+    <None Include="wwwroot\js\ckeditor\lang\es.js" />
+    <None Include="wwwroot\js\ckeditor\lang\et.js" />
+    <None Include="wwwroot\js\ckeditor\lang\eu.js" />
+    <None Include="wwwroot\js\ckeditor\lang\fa.js" />
+    <None Include="wwwroot\js\ckeditor\lang\fi.js" />
+    <None Include="wwwroot\js\ckeditor\lang\fo.js" />
+    <None Include="wwwroot\js\ckeditor\lang\fr-ca.js" />
+    <None Include="wwwroot\js\ckeditor\lang\fr.js" />
+    <None Include="wwwroot\js\ckeditor\lang\gl.js" />
+    <None Include="wwwroot\js\ckeditor\lang\gu.js" />
+    <None Include="wwwroot\js\ckeditor\lang\he.js" />
+    <None Include="wwwroot\js\ckeditor\lang\hi.js" />
+    <None Include="wwwroot\js\ckeditor\lang\hr.js" />
+    <None Include="wwwroot\js\ckeditor\lang\hu.js" />
+    <None Include="wwwroot\js\ckeditor\lang\id.js" />
+    <None Include="wwwroot\js\ckeditor\lang\is.js" />
+    <None Include="wwwroot\js\ckeditor\lang\it.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ja.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ka.js" />
+    <None Include="wwwroot\js\ckeditor\lang\km.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ko.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ku.js" />
+    <None Include="wwwroot\js\ckeditor\lang\lt.js" />
+    <None Include="wwwroot\js\ckeditor\lang\lv.js" />
+    <None Include="wwwroot\js\ckeditor\lang\mk.js" />
+    <None Include="wwwroot\js\ckeditor\lang\mn.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ms.js" />
+    <None Include="wwwroot\js\ckeditor\lang\nb.js" />
+    <None Include="wwwroot\js\ckeditor\lang\nl.js" />
+    <None Include="wwwroot\js\ckeditor\lang\no.js" />
+    <None Include="wwwroot\js\ckeditor\lang\pl.js" />
+    <None Include="wwwroot\js\ckeditor\lang\pt-br.js" />
+    <None Include="wwwroot\js\ckeditor\lang\pt.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ro.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ru.js" />
+    <None Include="wwwroot\js\ckeditor\lang\si.js" />
+    <None Include="wwwroot\js\ckeditor\lang\sk.js" />
+    <None Include="wwwroot\js\ckeditor\lang\sl.js" />
+    <None Include="wwwroot\js\ckeditor\lang\sq.js" />
+    <None Include="wwwroot\js\ckeditor\lang\sr-latn.js" />
+    <None Include="wwwroot\js\ckeditor\lang\sr.js" />
+    <None Include="wwwroot\js\ckeditor\lang\sv.js" />
+    <None Include="wwwroot\js\ckeditor\lang\th.js" />
+    <None Include="wwwroot\js\ckeditor\lang\tr.js" />
+    <None Include="wwwroot\js\ckeditor\lang\tt.js" />
+    <None Include="wwwroot\js\ckeditor\lang\ug.js" />
+    <None Include="wwwroot\js\ckeditor\lang\uk.js" />
+    <None Include="wwwroot\js\ckeditor\lang\vi.js" />
+    <None Include="wwwroot\js\ckeditor\lang\zh-cn.js" />
+    <None Include="wwwroot\js\ckeditor\lang\zh.js" />
+    <None Include="wwwroot\js\ckeditor\LICENSE.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\about\dialogs\about.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\clipboard\dialogs\paste.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\image\dialogs\image.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\link\dialogs\anchor.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\link\dialogs\link.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\pastefromword\filter\default.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\scayt\dialogs\options.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\scayt\LICENSE.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\scayt\README.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\da.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\es.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\id.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\km.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\si.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\table\dialogs\table.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\dialogs\wsc.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\LICENSE.md" />
+    <None Include="wwwroot\js\ckeditor\plugins\wsc\README.md" />
+    <None Include="wwwroot\js\ckeditor\README.md" />
+    <None Include="wwwroot\js\ckeditor\samples\assets\posteddata.php" />
+    <None Include="wwwroot\js\ckeditor\samples\assets\uilanguages\languages.js" />
+    <None Include="wwwroot\js\ckeditor\samples\plugins\dialog\assets\my_dialog.js" />
+    <None Include="wwwroot\js\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
+    <None Include="wwwroot\js\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.swf" />
+    <None Include="wwwroot\js\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\swfobject.js" />
+    <None Include="wwwroot\js\ckeditor\samples\sample.js" />
+    <None Include="wwwroot\js\ckeditor\samples\sample_posteddata.php" />
+    <None Include="wwwroot\js\ckeditor\skins\moono\readme.md" />
+    <None Include="wwwroot\js\ckeditor\styles.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\Spotlight\js\spotlight.bundle.js" />
+    <None Include="wwwroot\LR_Content\bootstrap\bootstrap.min.js" />
+    <None Include="wwwroot\LR_Content\bootstrap\html5shiv.min.js" />
+    <None Include="wwwroot\LR_Content\bootstrap\modernizr-2.6.2.min.js" />
+    <None Include="wwwroot\LR_Content\bootstrap\respond.min.js" />
+    <None Include="wwwroot\LR_Content\font\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\LR_Content\font\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\LR_Content\font\learunfont\iconfont.svg" />
+    <None Include="wwwroot\LR_Content\images\learunim\emotion\emotion.js" />
+    <None Include="wwwroot\LR_Content\jquery\jquery-1.10.2.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\jquery.md5.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\fullcalendar\js\fullcalendar.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\fullcalendar\js\jquery-1.7.2.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jfGrid\jfgrid.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jfGrid\jfgrid.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jqprint\._jquery.jqprint-0.3.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jqprint\jquery.jqprint-0.3.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jquery-ui\images\ui-icons_2e83ff_256x240.png.5576_1.1154.partial" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jquery-ui\jquery-ui-1.11.4.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jquery-ui\jquery-ui.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jquery.cookie.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\jquery.cookie.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\layer\layer.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\scrollbar\jquery.mCustomScrollbar.concat.min.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\scrollbar\jquery.mCustomScrollbar.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shAutoloader.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushAppleScript.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushAS3.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushBash.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushColdFusion.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushCpp.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushCSharp.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushCss.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushDelphi.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushDiff.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushErlang.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushGroovy.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushJava.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushJavaFX.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushJScript.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushPerl.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushPhp.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushPlain.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushPowerShell.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushPython.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushRuby.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushSass.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushScala.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushSql.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushVb.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shBrushXml.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shCore.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\Scripts\shLegacy.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\src\shAutoloader.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\src\shCore.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\syntaxhighlighter\src\shLegacy.js" />
+    <None Include="wwwroot\LR_Content\jquery\plugin\toastr\toastr.min.js" />
+    <None Include="wwwroot\LR_Content\plugin\contextmenu\lr-contextmenu.js" />
+    <None Include="wwwroot\LR_Content\plugin\custmerform\lr-formcomponts.js" />
+    <None Include="wwwroot\LR_Content\plugin\custmerform\lr-formdesigner.js" />
+    <None Include="wwwroot\LR_Content\plugin\custmerform\lr-formrender.js" />
+    <None Include="wwwroot\LR_Content\plugin\custmerquery\lr-custmerquery.js" />
+    <None Include="wwwroot\LR_Content\plugin\date\lr-datepicker.js" />
+    <None Include="wwwroot\LR_Content\plugin\formselect\lr-formselect.js" />
+    <None Include="wwwroot\LR_Content\plugin\grid\jfgrid.js" />
+    <None Include="wwwroot\LR_Content\plugin\im\lr-im.js" />
+    <None Include="wwwroot\LR_Content\plugin\inputsearch\lr-isearch.js" />
+    <None Include="wwwroot\LR_Content\plugin\layerselect\lr-layerselect.js" />
+    <None Include="wwwroot\LR_Content\plugin\layout\lr-layout.js" />
+    <None Include="wwwroot\LR_Content\plugin\mousewheel\mousewheel.js" />
+    <None Include="wwwroot\LR_Content\plugin\resize\resize.js" />
+    <None Include="wwwroot\LR_Content\plugin\scroll\scroll.js" />
+    <None Include="wwwroot\LR_Content\plugin\select\lr-select.js" />
+    <None Include="wwwroot\LR_Content\plugin\timeline\lr-timeline.js" />
+    <None Include="wwwroot\LR_Content\plugin\tree\lr-tree.js" />
+    <None Include="wwwroot\LR_Content\plugin\uploader\lr-uploader.js" />
+    <None Include="wwwroot\LR_Content\plugin\wizard\wizard.js" />
+    <None Include="wwwroot\LR_Content\plugin\workflow\lr-workflow-api.js" />
+    <None Include="wwwroot\LR_Content\plugin\workflow\lr-workflow-ui.js" />
+    <None Include="wwwroot\LR_Content\script\lr-admin.js" />
+    <None Include="wwwroot\LR_Content\script\lr-ajax.js" />
+    <None Include="wwwroot\LR_Content\script\lr-authorize.js" />
+    <None Include="wwwroot\LR_Content\script\lr-base.js" />
+    <None Include="wwwroot\LR_Content\script\lr-bootstrap.js" />
+    <None Include="wwwroot\LR_Content\script\lr-chartshelper.js" />
+    <None Include="wwwroot\LR_Content\script\lr-clientdata.js" />
+    <None Include="wwwroot\LR_Content\script\lr-date.js" />
+    <None Include="wwwroot\LR_Content\script\lr-excel.js" />
+    <None Include="wwwroot\LR_Content\script\lr-fileupload.js" />
+    <None Include="wwwroot\LR_Content\script\lr-form.js" />
+    <None Include="wwwroot\LR_Content\script\lr-iframe-index.js" />
+    <None Include="wwwroot\LR_Content\script\lr-im.js" />
+    <None Include="wwwroot\LR_Content\script\lr-language.js" />
+    <None Include="wwwroot\LR_Content\script\lr-layer.js" />
+    <None Include="wwwroot\LR_Content\script\lr-tabs.js" />
+    <None Include="wwwroot\LR_Content\script\lr-validator-helper.js" />
+    <None Include="wwwroot\LR_Content\script\lr-validator.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0-preview1.19506.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="Minio" Version="3.1.13" />
+    <PackageReference Include="MySql.Data" Version="8.0.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreFrame.Core\NetCoreFrame.Core.csproj" />
+    <ProjectReference Include="..\NetCoreFrame.Entity\NetCoreFrame.Entity.csproj" />
+    <ProjectReference Include="..\NetCoreFrame.Service\NetCoreFrame.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\wangEditor\" />
+    <Folder Include="wwwroot\upload\" />
+  </ItemGroup>
+
+
+
+</Project>

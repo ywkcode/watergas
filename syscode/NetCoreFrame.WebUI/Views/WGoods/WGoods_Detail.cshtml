@@ -1,0 +1,114 @@
+﻿@model NetCoreFrame.Entity.Wedrent.W_Goods
+
+@{
+    ViewData["Title"] = "详细";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Update" class="layui-form layui-form-pane" data-ajax-success="afterSuccess" data-ajax="true" data-ajax-method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+   
+    <div class="layui-form-item">
+        <label asp-for="GoodsName" class="layui-form-label"></label> 
+        <div class="layui-input-block">
+            <input asp-for="GoodsName" type="text" name="GoodsName"  readonly="readonly"
+                   placeholder="商品名称" autocomplete="off" class="layui-input" value="@Model.GoodsName">
+            <span asp-validation-for="GoodsName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsNumber" class="layui-form-label"></label> 
+        <div class="layui-input-block">
+            <input asp-for="GoodsNumber" type="text" name="GoodsNumber" readonly="readonly"
+                   placeholder="商品编码" autocomplete="off" class="layui-input" value="@Model.GoodsNumber">
+            <span asp-validation-for="GoodsNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">图片</label>
+        <div class="layui-input-block">
+            <form:Upload name="ImgAttachID" is-upload-img="true" selectd-value="@Model.ImgAttachID" ></form:Upload>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsType" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsType" type="text" name="GoodsType" readonly="readonly"
+                   placeholder="品类" autocomplete="off" class="layui-input" value="@Model.GoodsType">
+            <span asp-validation-for="GoodsType" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsSize" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsSize" type="text" name="GoodsSize" readonly="readonly"
+                   placeholder="尺码" autocomplete="off" class="layui-input" value="@Model.GoodsSize">
+            <span asp-validation-for="GoodsSize" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsPrice" class="layui-form-label"></label>
+        <div class="layui-input-block"> 
+            <input asp-for="GoodsPrice" type="text" name="GoodsPrice" readonly="readonly"
+                   placeholder="价格" autocomplete="off" class="layui-input" value="@Model.GoodsPrice">
+            <span asp-validation-for="GoodsPrice" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Supplier" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="Supplier" type="text" name="Supplier" readonly="readonly"
+                   placeholder="进货商" autocomplete="off" class="layui-input" value="@Model.Supplier">
+            <span asp-validation-for="Supplier" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="GoodsCount" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsCount" type="text" name="GoodsCount" readonly="readonly"
+                   placeholder="件数" autocomplete="off" class="layui-input" value="@Model.GoodsCount">
+            <span asp-validation-for="GoodsCount" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="OrderTime" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <form:DateTime name="OrderTime" is-now="true" selected-value="@Model.OrderTime"></form:DateTime>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label asp-for="GoodsDescription" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="GoodsDescription" type="text" name="GoodsDescription" readonly="readonly"
+                   placeholder="商品描述" autocomplete="off" class="layui-input" value="@Model.GoodsDescription">
+            <span asp-validation-for="GoodsDescription" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label asp-for="Remarks" class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input asp-for="Remarks" type="text" name="Remarks" readonly="readonly"
+                   placeholder="备注" autocomplete="off" class="layui-input" value="@Model.Remarks">
+            <span asp-validation-for="Remarks" class="text-danger"></span>
+        </div>
+    </div>
+    
+</form>
+@section Scripts{
+    <script type="text/javascript">
+        $("#ImgAttachID_img").attr('src', '@Model.ImgAttachID');
+      
+    </script>
+
+}
+
+@section Styles
+{
+    <style type="text/css">
+        .btnlist {
+            float: right;
+            padding: 5px;
+        }
+    </style>
+}

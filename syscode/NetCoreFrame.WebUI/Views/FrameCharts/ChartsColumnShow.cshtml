@@ -1,0 +1,64 @@
+﻿@model NetCoreFrame.Entity.FrameEntity.Frame_Charts
+@{
+    ViewData["Title"] = "ChartsLineShow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main" style="width: 600px;height:400px;margin:0 auto;margin-top:50px"></div>
+@section Scripts{
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            Initial();
+        });
+        function Initial() {
+              $.ajax({
+                url: '/FrameCharts/PieChart',
+                type: "POST",
+                traditional: true,//传数组一定要加的
+                data: { "chartid": '@ViewBag.chartid' },
+                dataType: "json",
+                  success: function (data) {
+                    if (data.code == 200) {
+                        var headlist = data.data.headlist;
+                        var datalist = data.data.datalist;
+                        LoadChart(headlist, datalist);
+                    }
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        function LoadChart(headlist, datalist)
+        {
+            // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+ 
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '@Model.ChartTitle'
+            },
+            tooltip: {},
+            legend: {
+                data:['@Model.ChartInfo']
+            },
+            xAxis: {
+                data: headlist
+            },
+            yAxis: {},
+            series: [{
+                name:'@Model.ChartInfo',
+                type: 'bar',
+                data: datalist
+            }]
+        };
+ 
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        }
+
+
+    </script>
+}
+

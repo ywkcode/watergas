@@ -1,0 +1,413 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+  
+
+@section Styles{
+    <style type="text/css">
+        .layui-table-view .layui-table-body tr.table_tr_click {
+            background-color: #e6e6e6;
+        }
+
+        .icon_choose {
+            font-size: 18px;
+            font-weight: bold;
+        }
+          .layui-form-item {
+            display: inline-block;
+            clear: none !important;
+            margin-bottom: 0px !important;
+        }
+    </style>
+}
+
+<form class="layui-form">
+    <div class="layui-row">
+        <div class="layui-col-xs4">
+            <script type="text/html" id="toolbar">
+
+                <div class="layui-btn-group">
+                    <button type="button" class="layui-btn-sm layui-btn-primary" lay-event="btnAdd"> <i class="layui-icon">&#xe654;</i>新建</button>
+                    <button type="button" class="layui-btn-sm layui-btn-primary" lay-event="btnGenerate"> <i class="layui-icon">&#xe642;</i>CRUD生成</button>
+                    <button type="button" class="layui-btn-sm layui-btn-primary" lay-event="btnDel"><i class="layui-icon">&#xe640;</i>删除</button>
+                </div>
+              
+            </script>
+            <table id="mainList" lay-filter="mainList" class="layui-table"
+                   lay-size="sm"></table>
+        </div>
+        <div class="layui-col-xs8">
+            <script type="text/html" id="toolbar2">
+                <div class="layui-btn-group">
+                    <button type="button" class="layui-btn-sm layui-btn-primary" lay-event="btnFieldAdd"> <i class="layui-icon">&#xe654;</i>新建字段</button> 
+                    <button type="button" class="layui-btn-sm layui-btn-primary" lay-event="btnFieldDel"><i class="layui-icon">&#xe640;</i>删除字段</button>
+                </div>
+               
+            </script>
+            <table id="fieldList" lay-filter="fieldList" class="layui-table" lay-data="{height: 'full-50', id:'menuList',  text: { none: '单击列表查看表单明细' }}"
+                   lay-size="sm"></table>
+        </div>
+
+    </div>
+
+</form>
+@section Scripts{
+
+    <script type="text/javascript">
+        var index;
+        var tabid = "0"; //表单id
+        var tabname = ""; //表单名
+        layui.use(['layer', 'table', "tree"], function ()
+        {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+            var Layuitable = layui.table;
+
+            var columns = [
+                { checkbox: true, fixed: true },
+                { field: 'TableName', title: '表单名称'},
+                { field: 'PhysicalName', title: '数据表名' },
+                { field: 'ControllerName', title: '控制器' },
+                { fixed: 'right', width: 80, align: 'center', toolbar: '#barproperty', title: "属性" }
+            ];
+            var columns_field = [
+                { checkbox: true, fixed: true },
+                { field: 'FieldDisplayName', title: '字段名' },
+                { field: 'FieldType', title: '字段类型' },
+                { field: 'FieldLength', title: '字段长度' },
+                { field: 'DecimalLength', title: 'Decimal长度' },
+                { field: 'FieldDisplayType', title: '字段展现' },
+                { field: 'FieldDisplayName', title: '中文名' },
+                { field: 'DataSource_CodeName', title: '数据源' },
+                { field: 'IsShowInAdd', title: '是否添加显示', toolbar: '#barIsShowInAdd' },
+                { field: 'IsMustFill', title: '是否必填', toolbar: '#barIsMustFill' },
+                { field: 'IsSearchCondition', title: '是否查询', toolbar: '#barIsSearchCondition' },
+            ];
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#mainList',
+                page: true,
+                url: '/FrameTableInfo/All',
+                cols: [columns]
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                toolbar: '#toolbar',
+                loading: true
+            });
+            //头工具栏事件
+              Layuitable.on('toolbar(mainList)', function(obj){
+                switch(obj.event){
+                    case 'btnAdd':
+                        Create();
+                  break;
+                  case 'btnDel':
+                        Delete();
+                  break;
+                  case 'btnGenerate':
+                    Generate();
+                  break; 
+                };
+              });
+             
+            Layuitable.render({
+                // skin: 'line', //行边框风格
+                even: false,//开启隔行背景
+                size: 'sm', //小尺寸的表格
+                height: 'full-50',
+                elem: '#fieldList',
+                page: true,
+                url: '/FrameTableField/LoadFieldList',
+                where: { TableId: 0 },
+                 toolbar: '#toolbar2',
+                cols: [columns_field]
+                , response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+                loading: true
+            });
+             //头工具栏事件
+              Layuitable.on('toolbar(fieldList)', function(obj){
+                switch(obj.event){
+                  case 'btnFieldAdd':
+                        FieldCreate();
+                  break;
+                    case 'btnFieldDel':
+                        FieldDel();
+                  break;
+                
+                };
+              });
+            //监听行单击事件（单击事件为：rowDouble）
+            Layuitable.on('row(mainList)', function (obj) {
+                debugger;
+                menuList({ TableId: obj.data.TableId });
+                tabid = obj.data.TableId;
+                tabname = obj.data.TableName;
+            });
+            //主列表加载，可反复调用进行刷新
+            var config = {};  //table的参数，如搜索key，点击tree的id
+            var mainList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                Layuitable.reload('mainList', {
+                    url: '/FrameTableInfo/All',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+            };
+
+            var menuList = function (options) {
+                if (options != undefined) {
+                    $.extend(config, options);
+                }
+                Layuitable.reload('fieldList', {
+                    url: '/FrameTableField/LoadFieldList',
+                    where: config
+                    , response: {
+                        statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                });
+
+            };
+        });
+        function Create() {
+            index = layer.open
+                ({
+                    type: 2,
+                    title:'新建',
+                    content: '@Url.Action("Create", "FrameTableInfo")',
+                    area: ['500px', '400px'],
+                    btnAlign: 'c',
+             });
+        }
+        function Generate() {
+               var table = layui.table;
+                var checkStatus = table.checkStatus('mainList');
+                var datas = checkStatus.data;
+                debugger;
+                if (datas.length > 1||datas.length==0) {
+                    layer.msg("请选择正确行！");
+                    return;
+                } 
+                 $.ajax({
+                    url: '/FrameTableInfo/GeneratePage',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "TableID": datas[0].TableId},
+                    dataType: "json",
+                     success: function (data) {
+                         debugger;
+                         if (data.Status == true) {
+                             layer.msg("操作成功！");
+                             return true;
+                        }
+                    }
+                });
+        }
+
+        function Delete() {
+               //批量删除
+                var table = layui.table;
+                var checkStatus = table.checkStatus('mainList');
+                var datas = checkStatus.data;
+                var id = new Array();//声明数组
+                for (var i in datas) {
+                    id[i] = datas[i].ID;//得到复选框的值
+                }
+                $.ajax({
+                    url: '/FrameTableInfo/Delete',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "ids": id},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            ShowNotice();
+                        }
+                    }
+                });
+        }
+
+        function FieldDel() {
+             //批量删除
+                var table = layui.table;
+                var checkStatus = table.checkStatus('fieldList');
+                var datas = checkStatus.data;
+                var id = new Array();//声明数组
+                for (var i in datas) {
+                    id[i] = datas[i].ID;//得到复选框的值
+                }
+                $.ajax({
+                    url: '/FrameTableField/Delete',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "ids": id},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            ShowNotice();
+                        }
+                    }
+                });
+        }
+        function FieldCreate() {
+            debugger;
+            var Filter = "?TableName=" + tabname + "&TableId=" + tabid;
+            if (tabname == "") {
+                layer.msg("请选择表单！");
+                return;
+            }
+            index = layer.open
+                ({
+                    type: 2,
+                    title:'新建',
+                    content: '@Url.Action("Create", "FrameTableField")' + Filter,
+                    area: ['800px', '600px'],
+                    btnAlign: 'c',
+             });
+        }
+        function Edit(id) {
+             index = layer.open
+                ({
+                    type: 2,
+                    title:'编辑',
+                    content: '/FrameTableInfo/Edit?id=' + id,
+                         area: ['500px', '400px'],
+                    btnAlign: 'c',
+                    end: function () {
+                        ShowNotice();
+                    }
+                });
+        }
+
+        function ShowNotice() {
+            var noticeIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            layer.msg("操作成功");
+            layer.close(noticeIndex);
+            location.reload();//弹出层结束后，刷新主页面
+        }
+
+        $('.layui-btn').on('click', function () {
+
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听页面主按钮操作
+        var active = {
+
+            btnDel: function ()
+            {
+                //批量删除
+                var table = layui.table;
+                var checkStatus = table.checkStatus('mainList');
+                var datas = checkStatus.data;
+                var id = new Array();//声明数组
+                for (var i in datas) {
+                    id[i] = datas[i].ID;//得到复选框的值
+                }
+                $.ajax({
+                    url: '/FrameTableInfo/Delete',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "ids": id},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            ShowNotice();
+                        }
+                    }
+                });
+            }
+            , btnGenerate: function () { //生成页面
+                var table = layui.table;
+                var checkStatus = table.checkStatus('mainList');
+                var datas = checkStatus.data;
+                debugger;
+                if (datas.length > 1||datas.length==0) {
+                    layer.msg("请选择正确行！");
+                    return;
+                } 
+                 $.ajax({
+                    url: '/FrameTableInfo/GeneratePage',
+                    type: "POST",
+                    traditional: true,//传数组一定要加的
+                    data: { "TableID": datas[0].TableId},
+                    dataType: "json",
+                     success: function (data) {
+                         debugger;
+                         if (data.Status == true) {
+                             layer.msg("操作成功！");
+                             return true;
+                        }
+                    }
+                });
+            }
+            , btnAdd: function () {  //添加
+                Create();
+            }
+            , btnFieldAdd: function () {  //添加
+                FieldCreate();
+            }
+            , btnEdit: function () {  //编辑
+                var checkStatus = layui.table.checkStatus('mainList')
+                    , data = checkStatus.data;
+                if (data.length != 1) {
+                    layer.msg("请选择编辑的行，且同时只能编辑一行");
+                    return;
+                }
+                //editDlg.update(data[0]);
+                Edit(data[0]["ID"]);
+            }
+
+            , search: function () {   //搜索
+                mainList({ key: $('#key').val() });
+            }
+            , btnRefresh: function () {
+                mainList();
+            }
+        };
+        $(document).on('click', '.layui-table-view .layui-table-body tr', function (event) {
+            var trElem = $(this);
+            var tableView = trElem.closest('.layui-table-view');
+            tableView.find('.layui-table-body tr.table_tr_click').removeClass('table_tr_click');
+            tableView.find('.layui-table-body tr[data-index="' + trElem.data('index') + '"]').addClass('table_tr_click');
+        });
+    </script>
+    <script type="text/html" id="barIsShowInAdd">
+        {{#  if(d.IsShowInAdd==1){ }}
+        <i class="layui-icon layui-icon-ok icon_choose" style="color:green;"></i>
+        {{# } else{ }}
+        <i class="layui-icon layui-icon-close icon_choose" style="color:red;"></i>
+        {{# }  }}
+    </script>
+    <script type="text/html" id="barIsMustFill">
+        {{#  if(d.IsMustFill==1){ }}
+        <i class="layui-icon layui-icon-ok icon_choose" style="color:green;"></i>
+        {{# } else{ }}
+        <i class="layui-icon layui-icon-close icon_choose" style="color:red;"></i>
+        {{# }  }}
+    </script>
+    <script type="text/html" id="barIsSearchCondition">
+        {{#  if(d.IsSearchCondition==1){ }}
+        <i class="layui-icon layui-icon-ok icon_choose" style="color:green;"></i>
+        {{# } else{ }}
+        <i class="layui-icon layui-icon-close icon_choose" style="color:red;"></i>
+        {{# }  }}
+    </script>
+    <script type="text/html" id="barproperty">
+        <a href="">设置</a>&nbsp;
+    </script>
+}
+
+
